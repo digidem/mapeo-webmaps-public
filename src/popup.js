@@ -60,6 +60,9 @@ var popupStyle = css`
   :host p {
     margin-bottom: 0.5em;
   }
+  .mapboxgl-popup-close-button {
+    z-index: 1;
+  }
 `
 
 // Clear previous IMG before updating to new image
@@ -78,7 +81,8 @@ function Popup (map, opts) {
   if (!(this instanceof Popup)) return new Popup(map, opts)
   this.map = map
   this.popup = new mapboxgl.Popup(assign({
-    closeButton: true
+    closeButton: true,
+    closeOnClick: false
   }, opts))
   this.popupNode = yo`<div class=${popupStyle}></div>`
   this.popup.setDOMContent(this.popupNode)

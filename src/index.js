@@ -69,7 +69,7 @@ function onLoad () {
   map.on('click', function (e) {
     var features = map.queryRenderedFeatures(e.point, { layers: ['points'] })
 
-    if (!features.length) return
+    if (!features.length) return popup.remove()
 
     var loc = features[0].geometry.coordinates
     popup.popup.options.offset = popupOffsets
