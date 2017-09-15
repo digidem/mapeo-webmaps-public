@@ -1,0 +1,16 @@
+{
+  "type": "FeatureCollection",
+  "features": [{
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-59.4377, 2.6658]
+    },
+    "properties": {
+      "image": "http://images.wapichanao.org/3621ef60e9ad8ea9fda7a38967e78674.jpg",
+      "title": "Dadabwao wako danaa",
+      "date": "2016-03-14T07:00:00.000Z",
+      "description": "Major forest destruction, severe damage to creek beds and water pollution by illegal Brazilian and Guyanese miners all leading to scarcity of game and fish and lack of clean water (creek destroyed right to its source)"
+    }
+  }]
+}
