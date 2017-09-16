@@ -12,5 +12,53 @@
       "date": "2016-03-14T07:00:00.000Z",
       "description": "Major forest destruction, severe damage to creek beds and water pollution by illegal Brazilian and Guyanese miners all leading to scarcity of game and fish and lack of clean water (creek destroyed right to its source)"
     }
+  }, {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-59.9201, 2.50803]
+    },
+    "properties": {
+      "image": "http://images.wapichanao.org/3621ef60e9ad8ea9fda7a38967e78674.jpg",
+      "title": "Bokobokoin daap",
+      "date": "2016-02-28T07:00:00.000Z",
+      "description": "Constructed and graded illegal river crossing on the Takatu River: used by rustlers and illegal sports hunters"
+    }
+  }, {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-59.97386, 2.66825]
+    },
+    "properties": {
+      "image": "http://images.wapichanao.org/3621ef60e9ad8ea9fda7a38967e78674.jpg",
+      "title": "Bai wao paawa",
+      "date": "2014-10-14T07:00:00.000Z",
+      "description": "Very active motor vehicle and bicycle crossing on the Upper Takatu: used by illegal hunters and illegal miners entering Wapichan territory"
+    }
+  }, {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-59.98376, 2.85068]
+    },
+    "properties": {
+      "image": "http://images.wapichanao.org/3621ef60e9ad8ea9fda7a38967e78674.jpg",
+      "title": "Dois fermao",
+      "date": "2015-03-03T07:00:00.000Z",
+      "description": "Illegal cattle crossing of Takatu used by Brazilian ranchers and rustlers"
+    }
+  }, {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-59.16289, 2.24038]
+    },
+    "properties": {
+      "image": "http://images.wapichanao.org/3621ef60e9ad8ea9fda7a38967e78674.jpg",
+      "title": "Marudi mining field",
+      "date": "2017-06-26T07:00:00.000Z",
+      "description": "Mining, deforestation & pollution"
+    }
   }]
 }

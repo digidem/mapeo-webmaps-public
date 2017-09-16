@@ -4,6 +4,7 @@
   "description": "Map of Wapichan monitoring points",
   "main": "index.js",
   "dependencies": {
+    "@mapbox/sexagesimal": "^1.1.0",
     "d3-request": "1.0.5",
     "date-fns": "^1.28.5",
     "lodash": "^4.17.4",

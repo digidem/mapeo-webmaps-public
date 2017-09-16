@@ -5,6 +5,15 @@ const assign = require('object-assign')
 const format = require('date-fns/format')
 
 var popupStyle = css`
+  #map .mapboxgl-popup-content {
+    box-shadow: 0 1px 2px 2px rgba(0,0,0,0.2);
+    padding: 0;
+  }
+  #map .mapboxgl-popup-content .mapboxgl-popup-close-button {
+    background-color: rgba(0,0,0,0.3);
+    font-size: 20px;
+    color: #ffffff;
+  }
   .embed-responsive {
     position: relative;
     display: block;
@@ -93,15 +102,21 @@ Popup.prototype.update = function (props) {
       ${(props.image && image(props.image))}
     <div class='popup-inner'>
       <h1>${props.title}</h1>
-      ${props.date && yo`<h2>${format(new Date(props.date), 'Do MMM YYYY')}</h2>`}
+      ${props.date && yo`<h2>${format(props.date, 'Do MMM YYYY')}</h2>`}
       ${props.description && yo`<p>${props.description}</p>`}
     </div>
   </div>`
   yo.update(this.popupNode, node, yoOptions)
+  this.id = props._id
 }
 
 Popup.prototype.remove = function () {
   this.popup.remove()
+  this.id = null
+}
+
+Popup.prototype.isOpen = function () {
+  return this.popup.isOpen()
 }
 
 Popup.prototype.setLngLat = function (lngLat) {

@@ -11,8 +11,13 @@ const points = {
       'stops': [[7, 5], [18, 25]]
     },
     'circle-color': {
-      'property': '__mf_color',
-      'type': 'identity'
+      'property': 'type',
+      'type': 'categorical',
+      'stops': [
+        ['mining', '#d95f02'],
+        ['crossing', '#7570b3'],
+        ['monitoring', '#1b9e77']
+      ]
     },
     'circle-opacity': 0.75,
     'circle-stroke-width': 1.5,
@@ -34,7 +39,36 @@ const pointsHover = {
   })
 }
 
+const bingSource = {
+  type: 'raster',
+  tiles: [
+    'https://ecn.t0.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=5869',
+    'https://ecn.t1.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=5869',
+    'https://ecn.t2.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=5869',
+    'https://ecn.t3.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=5869'
+  ],
+  minzoom: 10,
+  maxzoom: 21,
+  tileSize: 256
+}
+
+const bing = {
+  id: 'bing',
+  type: 'raster',
+  source: 'bing',
+  paint: {
+    'raster-opacity': {
+      stops: [
+        [10, 0],
+        [12, 0.75]
+      ]
+    }
+  }
+}
+
 module.exports = {
   points: points,
-  pointsHover: pointsHover
+  pointsHover: pointsHover,
+  bingSource: bingSource,
+  bing: bing
 }
