@@ -9,11 +9,20 @@
         "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
         "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
         margin:0; padding:0; }
-        #map { position:absolute; top:0; bottom:0; width:100%; }
+        .wrapper { position:absolute; top:0; bottom:0; width:100%; display: flex;}
+        .recents { flex: 1; overflow-y: scroll; max-width: 400px;}
+        .map-wrap { flex: 2; position: relative;}
+        #map { position:absolute; top:0; bottom:0; width:100%;}
+        .mapboxgl-ctrl-group > button.mapboxgl-ctrl-compass { display: none; }
     </style>
 </head>
 <body>
-<div id='map'></div>
+<div class='wrapper'>
+    <div class='recents'></div>
+    <div class='map-wrap'>
+        <div id='map'></div>
+    </div>
+</div>
 <script src='bundle.js'></script>
 </body>
 </html>
