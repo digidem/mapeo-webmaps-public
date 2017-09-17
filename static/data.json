@@ -46,22 +46,22 @@
       "coordinates": [-59.16289, 2.24038]
     },
     "properties": {
-      "image": "",
-      "title": "Marudi mining field",
+      "image": "images/s/marudi-ground-sluice.jpg",
+      "title": "Marudi groud sluice",
       "date": "2017-06-26T07:00:00.000Z",
       "type": "mining",
-      "description": "Mining, deforestation & pollution"
+      "description": "Miners are using another method of mining, called a ground sluice, by placing the box in the drain to trap gold."
     }
   }, {
     "type": "Feature",
     "geometry": {
       "type": "Point",
-      "coordinates": [-59.617, 1.96962]
+      "coordinates": [-59.62253, 1.97324]
     },
     "properties": {
-      "image": "",
+      "image": "images/s/wakoda-naawa.jpg",
       "title": "Wakoda Naawa",
-      "date": "2016-09-20T07:00:00.000Z",
+      "date": "2013-10-16T14_17_11_000Z",
       "type": "mining",
       "description": "Brazilian (illegal) miners working on creek bed are causing deforestation, destroying gathering grounds and generating serious water pollution in creeks and the Takatu River"
     }
@@ -72,9 +72,9 @@
       "coordinates": [-59.58544, 2.00864]
     },
     "properties": {
-      "image": "",
+      "image": "images/s/dadabwao-wako-danaa.jpg",
       "title": "Dadabwao wako danaa",
-      "date": "2014-03-16T07:00:00.000Z",
+      "date": "2016-03-14T07:00:00.000Z",
       "type": "mining",
       "description": "Major forest destruction, severe damage to creek beds and water pollution by illegal Brazilian and Guyanese miners all leading to scarcity of game and fish and lack of clean water (creek destroyed right to its source)"
     }
