@@ -35,7 +35,7 @@
     "lint": "standard",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && mkdirp dist && npm run build:js && npm run build:static && workbox generate:sw",
-    "build:js": "browserify src/index.js -t [ sheetify/transform ] -t yo-yoify -t es2020 > dist/bundle.js",
+    "build:js": "browserify src/index.js -t [ sheetify/transform ] -t yo-yoify -t es2020 -g uglifyify | uglifyjs -c comparisons=false -m > dist/bundle.js",
     "build:static": "copyup 'static/**/*' dist",
     "deploy": "npm run build && gh-pages -d dist"
   },
