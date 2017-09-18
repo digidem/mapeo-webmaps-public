@@ -2,17 +2,13 @@
   "name": "wapichan-map",
   "version": "1.0.0",
   "description": "Map of Wapichan monitoring points",
-  "main": "index.js",
+  "main": "src/index.js",
   "dependencies": {
-    "@mapbox/sexagesimal": "^1.1.0",
-    "d3-request": "1.0.5",
+    "d3-request": "^1.0.6",
     "date-fns": "^1.28.5",
-    "lodash": "^4.17.4",
     "mapbox-gl": "^0.40.0",
     "object-assign": "^4.1.1",
-    "querystring": "^0.2.0",
     "sheetify": "^6.0.1",
-    "sheetify-nested": "^1.0.2",
     "yo-yo": "^1.4.0"
   },
   "devDependencies": {
@@ -24,7 +20,7 @@
     "mkdirp": "^0.5.1",
     "rimraf": "^2.6.2",
     "standard": "^10.0.2",
-    "uglify-js": "^3.0.24",
+    "uglify-js": "^3.1.1",
     "uglifyify": "^4.0.3",
     "varify": "^0.2.0",
     "workbox-cli": "^2.0.1",

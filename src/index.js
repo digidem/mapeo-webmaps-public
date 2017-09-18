@@ -1,4 +1,4 @@
-const d3 = require('d3-request')
+const d3 = require('d3-request/build/d3-request.js')
 const qs = require('querystring')
 const css = require('sheetify')
 const mapboxgl = require('mapbox-gl')
