@@ -88,7 +88,8 @@
       "image": "images/s/sowan-wao-1.jpg",
       "title": "Sowan wao (Wakadanawa)",
       "date": "2016-03-16T07:00:00.000Z",
-      "type": "mining"
+      "type": "mining",
+      "description": "Creek bed mining. The creek cannot be identified any more."
     }
   }, {
     "type": "Feature",
@@ -100,7 +101,8 @@
       "image": "images/s/sowan-wao-2.jpg",
       "title": "Sowan wao (Wakadanawa)",
       "date": "2016-03-16T07:00:00.000Z",
-      "type": "mining"
+      "type": "mining",
+      "description": "Brazilian miners working out a creek bed, nothing but grass is left growing."
     }
   }, {
     "type": "Feature",

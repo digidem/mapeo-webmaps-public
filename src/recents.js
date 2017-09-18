@@ -22,11 +22,11 @@ const buttonClass = css`
     padding-top: 66.67%;
   }
   :host:hover {
-    background-color: #eee;
+    background-color: #eeeeee;
     cursor: pointer;
   }
   :host:focus {
-    background-color: #ddd;
+    background-color: #dddddd;
     outline: none;
   }
   :host:first-child {
@@ -63,6 +63,19 @@ const recentsClass = css`
   }
 `
 
+const missingClass = css`
+  :host {
+    background-color: #dddddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  :host > img {
+    width: 54px;
+    height: 46px;
+  }
+`
+
 module.exports = recents
 
 function recents (fc, onClick) {
@@ -82,7 +95,7 @@ function recents (fc, onClick) {
         const props = f.properties
         return yo`
           <button class='${buttonClass}' onclick=${onClick.bind(null, f.properties._id)}>
-            ${(props.image && image(props.image))}
+            ${image(props.image)}
             <div class='popup-inner'>
               <h2>${props.title}</h1>
               ${props.date && yo`<h3>${format(props.date, 'Do MMM YYYY')}</h2>`}
@@ -95,9 +108,9 @@ function recents (fc, onClick) {
 }
 
 function image (url) {
-  if (!url) return ''
   return yo`<div class='embed-responsive'>
-    <img class='embed-responsive-item' src=${url} />
+    ${url ? yo`<img class='embed-responsive-item' src=${url} />`
+    : yo`<div class='embed-responsive-item ${missingClass}'><img src='images/missing.png' /></div>`}
   </div>`
 }
 
