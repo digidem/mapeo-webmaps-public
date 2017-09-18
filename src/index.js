@@ -10,6 +10,9 @@ const recents = require('./recents')
 
 css('mapbox-gl/dist/mapbox-gl.css')
 
+const INITIAL_BOUNDS = [[-65, -5], [-52, 12]]
+const TERRITORY_BOUNDS = [[-60,1.74], [-58.09,3.36]]
+
 var markerRadius = 10
 var popupOffsets = {
   'top': [0, markerRadius],
@@ -32,10 +35,12 @@ var map = window.map = new mapboxgl.Map({
   container: 'map', // container id
   style: 'mapbox://styles/gmaclennan/cj7ljlyqy8gq52rrptj0zy6w7?fresh=true&optimize=true', // stylesheet location
   center: [-59.4377, 2.6658], // starting position
-  zoom: 9, // starting zoom
+  zoom: 5.5, // starting zoom
   hash: true,
   dragRotate: false
 }).on('load', onLoad)
+
+map.fitBounds(INITIAL_BOUNDS, {easing: function () { return 1 }})
 
 d3.json('data.json', function (err, _data) {
   if (err) return console.error(err)
@@ -66,12 +71,14 @@ function onLoad () {
   if (--pending > 0) return
 
   var nav = new mapboxgl.NavigationControl()
-  map.addControl(nav, 'top-right')
+  map.addControl(nav, 'top-left')
   map.addSource('features', {type: 'geojson', data: data})
   map.addSource('bing', styles.bingSource)
   map.addLayer(styles.points)
   map.addLayer(styles.pointsHover)
   map.addLayer(styles.bing, 'landcover_crop')
+
+  map.fitBounds(TERRITORY_BOUNDS, {padding: 20, speed: 0.4})
 
   map.on('mousemove', function (e) {
     var features = map.queryRenderedFeatures(e.point, { layers: ['points'] })
