@@ -56,7 +56,7 @@ function onClickRecent (id) {
   const loc = features[0].geometry.coordinates
   map.flyTo({
     center: loc,
-    zoom: 12
+    zoom: 12.5
   })
   popup.update(features[0].properties)
   popup.setLngLat(loc)

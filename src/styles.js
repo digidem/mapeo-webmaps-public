@@ -47,7 +47,7 @@ const bingSource = {
     'https://ecn.t2.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=5869',
     'https://ecn.t3.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=5869'
   ],
-  minzoom: 10,
+  minzoom: 12,
   maxzoom: 21,
   tileSize: 256
 }
@@ -59,8 +59,8 @@ const bing = {
   paint: {
     'raster-opacity': {
       stops: [
-        [10, 0],
-        [12, 0.75]
+        [12, 0],
+        [12.5, 0.75]
       ]
     }
   }
