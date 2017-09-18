@@ -13,16 +13,16 @@ css('mapbox-gl/dist/mapbox-gl.css')
 const INITIAL_BOUNDS = [[-65, -5], [-52, 12]]
 const TERRITORY_BOUNDS = [[-60,1.74], [-58.09,3.36]]
 
-var markerRadius = 10
-var popupOffsets = {
-  'top': [0, markerRadius],
-  'top-left': [0, markerRadius],
-  'top-right': [0, markerRadius],
-  'bottom': [0, -markerRadius],
-  'bottom-left': [0, -markerRadius],
-  'bottom-right': [0, -markerRadius],
-  'left': [markerRadius, 0],
-  'right': [-markerRadius, 0]
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js').then(function(registration) {
+      // Registration was successful
+      console.log('ServiceWorker registration successful with scope: ', registration.scope)
+    }, function(err) {
+      // registration failed :(
+      console.log('ServiceWorker registration failed: ', err)
+    })
+  })
 }
 
 var data
