@@ -82,13 +82,10 @@ function recents (fc, onClick) {
   return yo`<div class='recents ${recentsClass}'>
     <header>
       <h1>Monitoring Reports</h1>
-      <p>This map platform displays some informaton collected by the SRDC local community
-      monitors from 2014–16. It is meant to show some examples and does not contain all the
-      points, which number over 100 sites. The site is work in progress and is still under a
-      process of refinement. The hope is that in due course it will be automatically linked
-      to the local data set (with our own data protection filters that are turned on or off
-      for specific information and images according to the wishes and decisions of our
-      villages and our formal "Information Sharing and Data Protection Agreement" (May 2017)</p>
+      <p>These reports from the Wapichan monitoring team document some of the key threats
+      and impacts to our ancestral territory from illegal mining and crossings into our territory
+      to steal cattle and illegally fish and hunt. The monitoring team has also been documenting
+      important resources and cultural sites throughout our territory.</p>
     </header>
     <div>
       ${fc.features.sort(cmpDate).map(function (f) {
