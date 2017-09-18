@@ -4,6 +4,7 @@ module.exports = {
     "**/*.{js,json,jpg,html}"
   ],
   "swDest": "dist/sw.js",
+  "skipWaiting": true,
   "runtimeCaching": [{
     // You can use a RegExp as the pattern:
     urlPattern: /https:\/\/api\.mapbox\.com|https:\/\/[abcd]\.tiles\.mapbox\.com|https:\/\/ecn\.t\d\.tiles\.virtualearth\.net/,
