@@ -36,7 +36,6 @@ var map = window.map = new mapboxgl.Map({
   style: 'mapbox://styles/gmaclennan/cj7ljlyqy8gq52rrptj0zy6w7?fresh=true&optimize=true', // stylesheet location
   center: [-59.4377, 2.6658], // starting position
   zoom: 5.5, // starting zoom
-  hash: true,
   dragRotate: false
 }).on('load', onLoad)
 
