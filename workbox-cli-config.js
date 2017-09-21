@@ -1,11 +1,11 @@
 module.exports = {
-  "globDirectory": "dist/",
-  "globPatterns": [
-    "**/*.{js,json,jpg,html}"
+  'globDirectory': 'dist/',
+  'globPatterns': [
+    '**/*.{js,json,jpg,html}'
   ],
-  "swDest": "dist/sw.js",
-  "skipWaiting": true,
-  "runtimeCaching": [{
+  'swDest': 'dist/sw.js',
+  'skipWaiting': true,
+  'runtimeCaching': [{
     // You can use a RegExp as the pattern:
     urlPattern: /https:\/\/api\.mapbox\.com|https:\/\/[abcd]\.tiles\.mapbox\.com|https:\/\/ecn\.t\d\.tiles\.virtualearth\.net/,
     handler: 'staleWhileRevalidate',
@@ -16,7 +16,7 @@ module.exports = {
       cacheableResponse: {statuses: [0, 200]}
     }
   }],
-  "globIgnores": [
-    "../workbox-cli-config.js"
+  'globIgnores': [
+    '../workbox-cli-config.js'
   ]
 }

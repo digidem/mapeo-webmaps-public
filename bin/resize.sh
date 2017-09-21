@@ -1,7 +1,10 @@
 #!/bin/bash
 
-cp images/*.jpg static/images/m/
-cp images/*.jpg static/images/s/
+mkdir -p static/assets/m/
+mkdir -p static/assets/s/
 
-sips -Z 400 static/images/s/*.jpg
-sips -Z 1200 static/images/m/*.jpg
+cp images/*.jpg static/assets/m/
+cp images/*.jpg static/assets/s/
+
+sips --resampleWidth 400 static/assets/s/*.jpg > /dev/null 2>&1
+sips --resampleWidth 1200 static/assets/m/*.jpg > /dev/null 2>&1

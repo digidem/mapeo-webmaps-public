@@ -7,7 +7,7 @@
       "coordinates": [-59.9201, 2.50803]
     },
     "properties": {
-      "image": "images/s/bokobokoin-daap.jpg",
+      "image": "assets/s/bokobokoin-daap.jpg",
       "title": "Bokobokoin daap",
       "date": "2016-02-28T07:00:00.000Z",
       "type": "crossing",
@@ -20,7 +20,7 @@
       "coordinates": [-59.97386, 2.66825]
     },
     "properties": {
-      "image": "images/s/bai-wao-paawa.jpg",
+      "image": "assets/s/bai-wao-paawa.jpg",
       "title": "Bai wao paawa",
       "date": "2014-10-14T07:00:00.000Z",
       "type": "crossing",
@@ -46,7 +46,7 @@
       "coordinates": [-59.16289, 2.24038]
     },
     "properties": {
-      "image": "images/s/marudi-ground-sluice.jpg",
+      "image": "assets/s/marudi-ground-sluice.jpg",
       "title": "Marudi ground sluice",
       "date": "2017-06-26T07:00:00.000Z",
       "type": "mining",
@@ -59,7 +59,7 @@
       "coordinates": [-59.62253, 1.97324]
     },
     "properties": {
-      "image": "images/s/wakoda-naawa.jpg",
+      "image": "assets/s/wakoda-naawa.jpg",
       "title": "Wakoda Naawa",
       "date": "2013-10-16T14_17_11_000Z",
       "type": "mining",
@@ -72,7 +72,7 @@
       "coordinates": [-59.58544, 2.00864]
     },
     "properties": {
-      "image": "images/s/dadabwao-wako-danaa.jpg",
+      "image": "assets/s/dadabwao-wako-danaa.jpg",
       "title": "Dadabwao wako danaa",
       "date": "2016-03-14T07:00:00.000Z",
       "type": "mining",
@@ -85,7 +85,7 @@
       "coordinates": [-59.614722, 1.97167]
     },
     "properties": {
-      "image": "images/s/sowan-wao-1.jpg",
+      "image": "assets/s/sowan-wao-1.jpg",
       "title": "Sowan wao (Wakadanawa)",
       "date": "2016-03-16T07:00:00.000Z",
       "type": "mining",
@@ -98,7 +98,7 @@
       "coordinates": [-59.63083, 1.96778]
     },
     "properties": {
-      "image": "images/s/sowan-wao-2.jpg",
+      "image": "assets/s/sowan-wao-2.jpg",
       "title": "Sowan wao (Wakadanawa)",
       "date": "2016-03-16T07:00:00.000Z",
       "type": "mining",
@@ -124,7 +124,7 @@
       "coordinates": [-59.14805, 2.21293]
     },
     "properties": {
-      "image": "images/s/tucan-creek.jpg",
+      "image": "assets/s/tucan-creek.jpg",
       "title": "Tucan Creek",
       "date": "2016-01-02T07:00:00.000Z",
       "type": "mining",
@@ -137,7 +137,7 @@
       "coordinates": [-59.1841927, 2.1945847]
     },
     "properties": {
-      "image": "images/s/lucas-creek.jpg",
+      "image": "assets/s/lucas-creek.jpg",
       "title": "Lucas Creek",
       "date": "2016-01-02T07:00:00.000Z",
       "type": "mining",
@@ -150,7 +150,7 @@
       "coordinates": [-59.168966, 2.2176336]
     },
     "properties": {
-      "image": "images/s/mazao-mountain.jpg",
+      "image": "assets/s/mazao-mountain.jpg",
       "title": "Mazao Mountain",
       "date": "2016-01-02T07:00:00.000Z",
       "type": "mining",
@@ -163,7 +163,7 @@
       "coordinates": [ -58.618, 2.469639]
     },
     "properties": {
-      "image": "images/s/riiwao.jpg",
+      "image": "assets/s/riiwao.jpg",
       "title": "Riiwao",
       "date": "2016-07-24T07:00:00.000Z",
       "type": "monitoring",
@@ -176,7 +176,7 @@
       "coordinates": [-59.339493, 3.31212]
     },
     "properties": {
-      "image": "images/s/rupununi-turtle-eggs.jpg",
+      "image": "assets/s/rupununi-turtle-eggs.jpg",
       "title": "Turtle eggs, Rupununi River",
       "date": "2015-06-01T07:00:00.000Z",
       "type": "monitoring",
