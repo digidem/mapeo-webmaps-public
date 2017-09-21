@@ -16,8 +16,9 @@
     "sheetify": "^6.0.1"
   },
   "devDependencies": {
-    "bankai": "^8.1.1",
-    "bubleify": "^0.7.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2020": "^1.0.2",
+    "bankai": "8.1.1",
     "budo": "^10.0.4",
     "copyfiles": "^1.2.0",
     "gh-pages": "^1.0.0",
@@ -27,13 +28,12 @@
     "workbox-cli": "^2.0.1"
   },
   "scripts": {
-    "start:bankai": "bankai start -V index.js",
     "start": "budo index.js --live -d static -- -t sheetify",
     "lint": "standard",
     "test": "npm run lint && npm run test-deps",
     "test-deps": "dependency-check . && dependency-check . --extra --no-dev -i normalize.css",
     "build": "rimraf dist && mkdirp dist && npm run build:js && npm run build:images && npm run build:static && workbox generate:sw",
-    "build:js": "bankai build --verbose -j [ -t bubleify] index.js",
+    "build:js": "bankai build index.js && mv dist/bundle.js dist/bundle.es2015.js && babel dist/bundle.es2015.js > dist/bundle.js",
     "build:static": "copyup 'static/**/*' dist",
     "build:images": "sh bin/resize.sh",
     "deploy": "npm run build && gh-pages -d dist"
