@@ -138,8 +138,7 @@ Popup.prototype.createElement = function (props) {
   this.props = props = props || {}
   const point = props.point || {x: 0, y: 0}
   const fProps = props.feature && props.feature.properties
-  const s = this.state
-  const anchor = props.anchor || getPopupAnchor(point, s.width, s.height, s.parentWidth, s.parentHeight)
+  const anchor = this.state.anchor = props.anchor || this._getPopupAnchor(point)
   return html`
     <div class='${popupClass} anchor-${anchor}' style='${getPopupTransform(anchor, point)}'>
       <div class='popup-tip'></div>
@@ -165,22 +164,28 @@ Popup.prototype.load = function (el) {
 }
 
 Popup.prototype.update = function (nextProps) {
-  return pointHasChanged(nextProps.point, this.props.point)
+  if (nextProps.feature !== this.props.feature) return true
+  const anchor = nextProps.anchor || this._getPopupAnchor(nextProps.point)
+  if (anchor !== this.state.anchor) return true
+  if (pointHasChanged(nextProps.point, this.props.point)) {
+    this.element.style = getPopupTransform(anchor, nextProps.point)
+  }
 }
 
-function getPopupAnchor (pos, popupWidth, popupHeight, mapWidth, mapHeight) {
+Popup.prototype._getPopupAnchor = function (pos) {
+  const s = this.state
   let anchor
-  if (pos.y < popupHeight) {
+  if (pos.y < s.height) {
     anchor = ['top']
-  } else if (pos.y > mapHeight - popupHeight) {
+  } else if (pos.y > s.parentHeight - s.height) {
     anchor = ['bottom']
   } else {
     anchor = []
   }
 
-  if (pos.x < popupWidth / 2) {
+  if (pos.x < s.width / 2) {
     anchor.push('left')
-  } else if (pos.x > mapWidth - popupWidth / 2) {
+  } else if (pos.x > s.parentWidth - s.width / 2) {
     anchor.push('right')
   }
 
