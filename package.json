@@ -10,7 +10,7 @@
     "d3-request": "^1.0.6",
     "date-fns": "^1.28.5",
     "mapbox-gl": "^0.40.1",
-    "nanocomponent": "^6.4.2",
+    "nanocomponent": "gmaclennan/nanocomponent#patch-1",
     "normalize.css": "^7.0.0",
     "object-assign": "^4.1.1",
     "sheetify": "^6.0.1"
