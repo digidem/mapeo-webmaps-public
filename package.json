@@ -33,7 +33,7 @@
     "test": "npm run lint && npm run test-deps",
     "test-deps": "dependency-check . && dependency-check . --extra --no-dev -i normalize.css",
     "build": "rimraf dist && mkdirp dist && npm run build:js && npm run build:images && npm run build:static && workbox generate:sw",
-    "build:js": "bankai build index.js && mv dist/bundle.js dist/bundle.es2015.js && babel dist/bundle.es2015.js > dist/bundle.js",
+    "build:js": "NODE_ENV=production bankai build index.js && mv dist/bundle.js dist/bundle.es2015.js && babel dist/bundle.es2015.js > dist/bundle.js",
     "build:static": "copyup 'static/**/*' dist",
     "build:images": "sh bin/resize.sh",
     "deploy": "npm run build && gh-pages -d dist"
