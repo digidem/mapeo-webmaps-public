@@ -100,6 +100,7 @@ function MainView () {
           ${mapView({
             features: state.features,
             zoomFeature: state.zoomFeature,
+            popupFeature: state.popupFeature,
             onClick: (feature, map) => {
               if (feature) {
                 emit(events.SHOW_POPUP, {feature: feature, map: map})
@@ -123,10 +124,7 @@ function MainView () {
             feature: state.popupFeature,
             point: state.popupPoint,
             anchor: state.zoomFeature && 'bottom',
-            close: () => {
-              console.log('close!!')
-              emit(events.CLOSE_POPUP)
-            }
+            close: () => emit(events.CLOSE_POPUP)
           })}
         </div>
       </body>

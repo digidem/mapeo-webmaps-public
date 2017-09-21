@@ -109,10 +109,14 @@ const popupClass = css`
       background-color: rgba(0,0,0,0.5);
       color: #dddddd;
   }
+  :host .popup-close-button:focus {
+      outline: none;
+  }
   :host .popup-content {
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     pointer-events: auto;
     background-color: #ffffff;
+    position: relative;
   }
   :host .popup-text {
     padding: 10px;
@@ -130,16 +134,17 @@ function Popup () {
 
 Popup.prototype = Object.create(Nanocomponent.prototype)
 
-Popup.prototype.createElement = function (props = {}) {
-  const {feature, point = {}, anchor, close} = this.props = props
-  const fProps = feature && feature.properties
-  const {width, height, parentWidth, parentHeight} = this.state
-  const _anchor = anchor || getPopupAnchor(point, width, height, parentWidth, parentHeight)
+Popup.prototype.createElement = function (props) {
+  this.props = props = props || {}
+  const point = props.point || {x: 0, y: 0}
+  const fProps = props.feature && props.feature.properties
+  const s = this.state
+  const anchor = props.anchor || getPopupAnchor(point, s.width, s.height, s.parentWidth, s.parentHeight)
   return html`
-    <div class='${popupClass} anchor-${_anchor}' style='${getPopupTransform(_anchor, point)}'>
+    <div class='${popupClass} anchor-${anchor}' style='${getPopupTransform(anchor, point)}'>
       <div class='popup-tip'></div>
       <div class='popup-content'>
-        <button class='popup-close-button' type='button' aria-label='Close popup' onclick=${close}>×</button>
+        <button class='popup-close-button' type='button' aria-label='Close popup' onclick=${props.close}>×</button>
         ${(fProps.image && image({url: fProps.image}))}
         <div class='popup-text'>
           <h2>${fProps.title}</h1>
@@ -159,8 +164,8 @@ Popup.prototype.load = function (el) {
   this.rerender()
 }
 
-Popup.prototype.update = function (nextProps, point) {
-  return true
+Popup.prototype.update = function (nextProps) {
+  return pointHasChanged(nextProps.point, this.props.point)
 }
 
 function getPopupAnchor (pos, popupWidth, popupHeight, mapWidth, mapHeight) {
@@ -198,6 +203,20 @@ const anchorTranslate = {
   'right': 'translate(-100%,-50%)'
 }
 
-function getPopupTransform (anchor = 'bottom', {x = 0, y = 0} = {}) {
-  return `transform: ${anchorTranslate[anchor]} translate(${x.toFixed()}px, ${y.toFixed()}px);`
+function getPopupTransform (anchor, point) {
+  anchor = anchor || 'bottom'
+  const x = roundToDp(point.x)
+  const y = roundToDp(point.y)
+  return `transform: ${anchorTranslate[anchor]} translate(${x}px, ${y}px);`
+}
+
+function pointHasChanged (p1, p2) {
+  if (roundToDp(p1.x) !== roundToDp(p2.x)) return true
+  if (roundToDp(p1.y) !== roundToDp(p2.y)) return true
+  return false
+}
+
+function roundToDp (num) {
+  const dp = window.devicePixelRatio || 1
+  return (num * dp).toFixed() / dp
 }

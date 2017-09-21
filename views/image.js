@@ -31,9 +31,10 @@ module.exports = image
 
 const MISSING_URL = 'assets/missing.png'
 
-function image ({url, ratio = '4x3', showMissing = false}) {
-  if (!url && !showMissing) return null
+function image (props) {
+  const ratio = props.ratio || '4x3'
+  if (!props.url && !props.showMissing) return null
   return html`<div class='${imageClass} ratio-${ratio}'>
-    <div style='background-image: url(${url || MISSING_URL})' class='${url ? '' : 'missing'}'></div>
+    <div style='background-image: url(${props.url || MISSING_URL})' class='${props.url ? '' : 'missing'}'></div>
   </div>`
 }

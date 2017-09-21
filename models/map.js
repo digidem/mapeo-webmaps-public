@@ -20,6 +20,7 @@ function MapModel () {
     emitter.on(events.CLOSE_POPUP, function () {
       state.popupFeature = null
       state.popupPoint = null
+      state.zoomFeature = null
       emitter.emit(state.events.RENDER)
     })
 

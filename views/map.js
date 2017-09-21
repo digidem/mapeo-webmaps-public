@@ -98,6 +98,7 @@ MapView.prototype.load = function (el) {
 MapView.prototype.update = function (nextProps) {
   const map = this.map
   const zoomFeature = nextProps.zoomFeature
+  const popupFeature = nextProps.popupFeature
 
   if (zoomFeature && zoomFeature !== this.props.zoomFeature) {
     const mapHeight = map.getContainer().offsetHeight
@@ -109,6 +110,14 @@ MapView.prototype.update = function (nextProps) {
       zoom: FLY_TO_ZOOM
     })
     nextProps.onMove({}, map)
+  }
+
+  const hoveredId = this.state.hoveredId !== null ? this.state.hoveredId : ''
+  if (popupFeature) {
+    this._ready(() => map.setFilter('points-hover', ['in', '_id', hoveredId, popupFeature.properties._id]))
+  } else {
+    this.state.clickedId = null
+    this._ready(() => map.setFilter('points-hover', ['in', '_id', hoveredId]))
   }
 
   if (nextProps.features !== this.props.features) {
