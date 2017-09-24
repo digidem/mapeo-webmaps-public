@@ -11,6 +11,7 @@ const imageClass = css`
     padding-bottom: 75%;
   }
   :host > * {
+    cursor: pointer;
     position: absolute;
     top: 0;
     right: 0;
@@ -34,7 +35,7 @@ const MISSING_URL = 'assets/missing.png'
 function image (props) {
   const ratio = props.ratio || '4x3'
   if (!props.url && !props.showMissing) return null
-  return html`<div class='${imageClass} ratio-${ratio}'>
+  return html`<div class='${imageClass} ratio-${ratio}' onclick=${props.onClick}>
     <div style='background-image: url(${props.url || MISSING_URL})' class='${props.url ? '' : 'missing'}'></div>
   </div>`
 }

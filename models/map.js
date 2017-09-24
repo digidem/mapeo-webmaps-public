@@ -33,7 +33,12 @@ function MapModel () {
     emitter.on(events.ZOOM_TO, function (id) {
       const match = state.features.filter(f => id === f.properties._id)
       state.zoomFeature = match.length ? match[0] : null
-      state.popupFeature = state.zoomFeature
+      if (state.popupFeature === state.zoomFeature && state.popupFeature && state.popupFeature.properties.image) {
+        state.featureModal = state.zoomFeature
+        state.featureModalOpen = true
+      } else {
+        state.popupFeature = state.zoomFeature
+      }
       emitter.emit(state.events.RENDER)
     })
 

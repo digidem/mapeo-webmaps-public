@@ -144,9 +144,9 @@ Popup.prototype.createElement = function (props) {
       <div class='popup-tip'></div>
       <div class='popup-content'>
         <button class='popup-close-button' type='button' aria-label='Close popup' onclick=${props.close}>×</button>
-        ${(fProps.image && image({url: fProps.image}))}
+        ${(fProps.image && image({url: fProps.image, onClick: props.onClick}))}
         <div class='popup-text'>
-          <h2>${fProps.title}</h1>
+          <h2>${fProps.title}</h2>
           ${fProps.date && html`<h3>${format(fProps.date, 'Do MMM YYYY')}</h2>`}
           ${fProps.description && html`<p>${fProps.description}</p>`}
         </div>

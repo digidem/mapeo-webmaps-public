@@ -16,8 +16,10 @@ const FEATURES_URL = 'data.json'
 
 app.use(require('./models/map')())
 app.use(require('./models/features')(FEATURES_URL))
+app.use(require('./models/modals')())
 
 app.route('/*', require('./views/main')())
 
-if (!module.parent) app.mount('body')
-else module.exports = app
+if (!module.parent) {
+  document.body.appendChild(app.start())
+} else module.exports = app

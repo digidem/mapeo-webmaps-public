@@ -4,7 +4,10 @@ const css = require('sheetify')
 const MapView = require('./map')
 const ListView = require('./list')
 const Popup = require('./popup')
-const events = require('../models/map').events
+const Modal = require('./modal')
+const FeatureModal = require('./feature-modal')
+const mapEvents = require('../models/map').events
+const modalsEvents = require('../models/modals').events
 
 const TITLE = 'Wapichan Monitoring'
 
@@ -85,15 +88,17 @@ function MainView () {
   const mapView = new MapView().render
   const listView = new ListView().render
   const popup = new Popup().render
+  const modal = new Modal()
+  const featureModal = new FeatureModal()
 
   return function mainView (state, emit) {
     if (state.title !== TITLE) emit(state.events.DOMTITLECHANGE, TITLE)
     return html`
-      <body class='${mainClass}'>
+      <div class='${mainClass}'>
         <div class='left-column'>
           ${listView({
             features: state.features,
-            onClick: (id) => emit(events.ZOOM_TO, id)
+            onClick: (id) => emit(mapEvents.ZOOM_TO, id)
           })}
         </div>
         <div class='right-column'>
@@ -103,20 +108,20 @@ function MainView () {
             popupFeature: state.popupFeature,
             onClick: (feature, map) => {
               if (feature) {
-                emit(events.SHOW_POPUP, {feature: feature, map: map})
+                emit(mapEvents.SHOW_POPUP, {feature: feature, map: map})
                 return
               }
               if (state.zoomFeature) {
-                emit(events.CANCEL_ZOOM)
+                emit(mapEvents.CANCEL_ZOOM)
               }
-              emit(events.CLOSE_POPUP)
+              emit(mapEvents.CLOSE_POPUP)
             },
             onMove: (e, map) => {
               if (state.popupFeature) {
-                emit(events.MOVE_POPUP, {event: e, map: map})
+                emit(mapEvents.MOVE_POPUP, {event: e, map: map})
               }
               if (e.originalEvent && state.zoomFeature) {
-                emit(events.CANCEL_ZOOM)
+                emit(mapEvents.CANCEL_ZOOM)
               }
             }
           })}
@@ -124,10 +129,23 @@ function MainView () {
             feature: state.popupFeature,
             point: state.popupPoint,
             anchor: state.zoomFeature && 'bottom',
-            close: () => emit(events.CLOSE_POPUP)
+            onClick: (e) => emit(modalsEvents.OPEN_FEATURE_MODAL, {feature: state.popupFeature, event: e}),
+            close: () => emit(mapEvents.CLOSE_POPUP)
           })}
         </div>
-      </body>
+        ${modal.render({
+          open: state.featureModalOpen,
+          close: () => {
+            emit(modalsEvents.CLOSE_FEATURE_MODAL)
+          },
+          render: () => featureModal.render({
+            feature: state.featureModal,
+            close: () => {
+              emit(modalsEvents.CLOSE_FEATURE_MODAL)
+            }
+          })
+        })}
+      </div>
     `
   }
 }
