@@ -22,10 +22,28 @@ const modalClass = css`
       "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   }
   :host img {
-    max-width: 90vw;
-    max-height: 90vh;
+    max-width: 100vw;
+    max-height: 100vh;
     display: block;
     background-size: 100% 100%;
+  }
+  :host .text {
+    display: none;
+  }
+  @media screen and (min-width: 50em) {
+    :host .text {
+      display: block;
+    }
+    :host img {
+      max-width: 95vw;
+      max-height: 95vh;
+    }
+  }
+  @media screen and (min-width: 80em) {
+    :host img {
+      max-width: 90vw;
+      max-height: 90vh;
+    }
   }
   :host button {
     background-color: rgba(0,0,0,0.3);
@@ -98,8 +116,8 @@ proto.createElement = function (props) {
   </div>`
 }
 
-proto.update = function () {
-  return true
+proto.update = function (nextProps) {
+  return nextProps.feature !== this.props.feature
 }
 
 proto.load = function () {
@@ -124,9 +142,9 @@ proto._resizeImage = function () {
   const vHeight = document.documentElement.clientHeight
   const ratio = this.preview.naturalWidth / this.preview.naturalHeight
   if (ratio >= vWidth / vHeight) {
-    this.dim = [vWidth * 0.9, vWidth * 0.9 / ratio]
+    this.dim = [vWidth, vWidth / ratio]
   } else {
-    this.dim = [ratio * vHeight * 0.9, vHeight * 0.9]
+    this.dim = [ratio * vHeight, vHeight]
   }
   this.rerender()
 }
