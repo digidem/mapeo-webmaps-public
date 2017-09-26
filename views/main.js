@@ -6,6 +6,7 @@ const ListView = require('./list')
 const Popup = require('./popup')
 const Modal = require('./modal')
 const FeatureModal = require('./feature-modal')
+const termsModal = require('./terms-modal')
 const mapEvents = require('../models/map').events
 const modalsEvents = require('../models/modals').events
 
@@ -97,6 +98,7 @@ function MainView () {
       <div class='${mainClass}'>
         <div class='left-column'>
           ${listView({
+            onTermsClick: () => emit(modalsEvents.OPEN_TERMS_MODAL),
             features: state.features,
             onClick: (id) => emit(mapEvents.ZOOM_TO, id)
           })}
@@ -143,6 +145,13 @@ function MainView () {
             close: () => {
               emit(modalsEvents.CLOSE_FEATURE_MODAL)
             }
+          })
+        })}
+        ${modal.render({
+          open: state.termsModalOpen,
+          close: () => emit(modalsEvents.CLOSE_TERMS_MODAL),
+          render: () => termsModal({
+            close: () => emit(modalsEvents.CLOSE_TERMS_MODAL)
           })
         })}
       </div>

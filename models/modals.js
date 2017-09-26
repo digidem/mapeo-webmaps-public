@@ -19,5 +19,13 @@ function ModalsModel () {
       state.featureModalOpen = false
       emitter.emit(state.events.RENDER)
     })
+    emitter.on(events.OPEN_TERMS_MODAL, function (payload) {
+      state.termsModalOpen = true
+      emitter.emit(state.events.RENDER)
+    })
+    emitter.on(events.CLOSE_TERMS_MODAL, function () {
+      state.termsModalOpen = false
+      emitter.emit(state.events.RENDER)
+    })
   }
 }
