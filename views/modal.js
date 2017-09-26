@@ -13,6 +13,11 @@ const modalClass = css`
     0% { background-color: rgba(0,0,0,0.8); }
     100% { background-color: rgba(0,0,0,0); }
   }
+  :host {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+      "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  }
   :host(.open) {
     z-index: 9999;
     position: absolute;

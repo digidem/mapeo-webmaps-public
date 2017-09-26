@@ -13,13 +13,10 @@ const modalClass = css`
     100% { opacity: 0; }
   }
   :host {
-    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 45px, rgba(0, 0, 0, 0.22) 0px 10px 18px;
     animation-name: tdFadeIn;
     animation-duration: .3s;
     animation-fill-mode: both;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont,
-      "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
-      "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   }
   :host img {
     max-width: 100vw;
