@@ -89,7 +89,8 @@ function MainView () {
   const mapView = new MapView().render
   const listView = new ListView().render
   const popup = new Popup().render
-  const modal = new Modal()
+  const featureModalContainer = new Modal()
+  const termsModalContainer = new Modal()
   const featureModal = new FeatureModal()
 
   return function mainView (state, emit) {
@@ -135,7 +136,7 @@ function MainView () {
             close: () => emit(mapEvents.CLOSE_POPUP)
           })}
         </div>
-        ${modal.render({
+        ${featureModalContainer.render({
           open: state.featureModalOpen,
           close: () => {
             emit(modalsEvents.CLOSE_FEATURE_MODAL)
@@ -147,7 +148,7 @@ function MainView () {
             }
           })
         })}
-        ${modal.render({
+        ${termsModalContainer.render({
           open: state.termsModalOpen,
           close: () => emit(modalsEvents.CLOSE_TERMS_MODAL),
           render: () => termsModal({
