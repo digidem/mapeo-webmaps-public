@@ -30,13 +30,13 @@
     "workbox-cli": "^2.0.1"
   },
   "scripts": {
-    "start": "budo index.js:bundle.js --live -P -d static -- -t sheetify",
+    "start": "budo index.js:public/bundle.js --live -P -d static -- -t sheetify",
     "lint": "standard",
     "test": "yarn lint && yarn test-deps",
     "test-deps": "dependency-check . && dependency-check . --extra --no-dev -i normalize.css",
-    "build": "rimraf dist && mkdirp dist && yarn build:js && yarn build:static && workbox generate:sw",
-    "build:js": "NODE_ENV=production bankai build index.js && mv dist/bundle.js dist/bundle.es2015.js && babel dist/bundle.es2015.js > dist/bundle.js",
-    "build:static": "copyup 'static/**/*' dist"
+    "build": "rimraf dist && mkdirp dist/public && yarn build:js && yarn build:static && workbox generate:sw",
+    "build:js": "NODE_ENV=production bankai build index.js dist/public && mv dist/public/bundle.js dist/public/bundle.es2015.js && babel dist/public/bundle.es2015.js > dist/public/bundle.js",
+    "build:static": "copyup 'static/**/*' dist/public"
   },
   "author": "Digital Democracy",
   "license": "MIT"

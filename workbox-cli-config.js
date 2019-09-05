@@ -1,9 +1,9 @@
 module.exports = {
-  'globDirectory': 'dist/',
+  'globDirectory': 'dist/public',
   'globPatterns': [
     '**/*.{js,json,jpg,html,png,css}'
   ],
-  'swDest': 'dist/sw.js',
+  'swDest': 'dist/public/sw.js',
   'skipWaiting': true,
   'runtimeCaching': [{
     // You can use a RegExp as the pattern:
