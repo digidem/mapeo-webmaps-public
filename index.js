@@ -12,13 +12,12 @@ if (process.env.NODE_ENV === 'production') {
   app.use(require('choo-log')())
 }
 
-const FEATURES_URL = 'data.json'
-
 app.use(require('./models/map')())
-app.use(require('./models/features')(FEATURES_URL))
+app.use(require('./models/features')())
 app.use(require('./models/modals')())
 
-app.route('/*', require('./views/main')())
+app.route('/public/:userId/:mapId', require('./views/main')())
+app.route('/*', require('./views/404')())
 
 if (!module.parent) {
   document.body.appendChild(app.start())

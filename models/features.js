@@ -1,28 +1,48 @@
 const d3 = require('d3-request/build/d3-request.js')
+const parseFirestore = require('firestore-parser')
 
 module.exports = FeaturesModel
 
-function FeaturesModel (url) {
+const events = FeaturesModel.events = {
+  LOAD: 'features:load'
+}
+
+const API_BASE = 'https://firestore.googleapis.com/v1beta1/projects/mapeo-webmaps/databases/(default)/documents/'
+const IMAGE_BASE = 'https://firebasestorage.googleapis.com/v0/b/mapeo-webmaps.appspot.com/o/'
+
+function FeaturesModel () {
   return function featuresModel (state, emitter) {
     state.features = state.features || []
-    d3.json(url, function (err, _data) {
-      if (err) return console.error(err)
-      state.features = parseDates(addIds(_data)).features
+
+    emitter.on(events.LOAD, function (userId, mapId) {
+      state.features = []
       emitter.emit(state.events.RENDER)
+      state.userId = userId
+      state.mapId = mapId
+      const url = `${API_BASE}groups/${userId}/maps/${mapId}/observations`
+      d3.json(url, function (err, _data) {
+        if (err) return console.error(err)
+        state.features = parse(_data, userId)
+        emitter.emit(state.events.RENDER)
+      })
     })
   }
 }
 
-function parseDates (fc) {
-  fc.features.forEach(function (f) {
-    f.properties.date = new Date(f.properties.date.split('T')[0])
-  })
-  return fc
-}
-
-function addIds (fc) {
-  fc.features.forEach(function (f, i) {
-    f.properties._id = i
-  })
-  return fc
+function parse (firestoreData, userId) {
+  try {
+    return parseFirestore(firestoreData).documents.map(function (doc) {
+      const f = doc.fields
+      f.properties.date = new Date(f.properties.date.split('T')[0])
+      const imageId = f.properties.image
+      if (imageId) {
+        f.properties.image = `${IMAGE_BASE}images%2F${userId}%2Foriginal%2F${f.properties.image}?alt=media`
+      } else {
+        delete f.properties.image
+      }
+      return f
+    })
+  } catch (e) {
+    console.error(e)
+  }
 }

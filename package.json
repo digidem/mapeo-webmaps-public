@@ -9,6 +9,7 @@
     "choo-log": "^7.2.1",
     "d3-request": "^1.0.6",
     "date-fns": "^1.28.5",
+    "firestore-parser": "^0.8.9",
     "lodash": "^4.17.4",
     "mapbox-gl": "^0.40.1",
     "nanocomponent": "gmaclennan/nanocomponent#patch-1",
@@ -30,7 +31,7 @@
     "workbox-cli": "^2.0.1"
   },
   "scripts": {
-    "start": "budo index.js:bundle.js --live -d static -- -t sheetify",
+    "start": "budo index.js:bundle.js --live -P -d static -- -t sheetify",
     "lint": "standard",
     "test": "npm run lint && npm run test-deps",
     "test-deps": "dependency-check . && dependency-check . --extra --no-dev -i normalize.css",

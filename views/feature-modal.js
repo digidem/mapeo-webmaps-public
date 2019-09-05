@@ -104,7 +104,7 @@ proto.createElement = function (props) {
   const fProps = props.feature ? props.feature.properties : {}
   return html`<div class='${modalClass}'>
     <button class='close' type='button' aria-label='Close popup' onclick=${props.close}>×</button>
-    <img src='${fProps.image.replace(/\/s\//, '/m/')}' style='background-image: url(${fProps.image}); width: ${this.dim[0]}px; height: ${this.dim[1]}px;'>
+    <img src='${fProps.image}' style='background-image: url(${fProps.image}); width: ${this.dim[0]}px; height: ${this.dim[1]}px;'>
     <div class='text'>
       <h2>${fProps.title}</h2>
       ${fProps.date && html`<h3>${format(fProps.date, 'Do MMM YYYY')}</h2>`}

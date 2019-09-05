@@ -9,6 +9,7 @@ const FeatureModal = require('./feature-modal')
 const termsModal = require('./terms-modal')
 const mapEvents = require('../models/map').events
 const modalsEvents = require('../models/modals').events
+const featuresEvents = require('../models/features').events
 
 const TITLE = 'Wapichan Monitoring'
 
@@ -94,7 +95,11 @@ function MainView () {
   const featureModal = new FeatureModal()
 
   return function mainView (state, emit) {
+    console.log(state)
     if (state.title !== TITLE) emit(state.events.DOMTITLECHANGE, TITLE)
+    if (state.userId !== state.params.userId || state.mapId !== state.params.mapId) {
+      emit(featuresEvents.LOAD, state.params.userId, state.params.mapId)
+    }
     return html`
       <div class='${mainClass}'>
         <div class='left-column'>
