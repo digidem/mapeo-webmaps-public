@@ -36,7 +36,7 @@
     "test-deps": "dependency-check . && dependency-check . --extra --no-dev -i normalize.css",
     "build": "rimraf dist && mkdirp dist/public && yarn build:js && yarn build:static && workbox generate:sw",
     "build:js": "NODE_ENV=production bankai build index.js dist/public && mv dist/public/bundle.js dist/public/bundle.es2015.js && babel dist/public/bundle.es2015.js > dist/public/bundle.js",
-    "build:static": "copyup 'static/**/*' dist/public"
+    "build:static": "copyup 'static/**/*' dist"
   },
   "author": "Digital Democracy",
   "license": "MIT"
