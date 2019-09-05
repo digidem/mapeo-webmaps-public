@@ -4,13 +4,20 @@ module.exports = {
     '**/*.{js,json,jpg,html,png,css}'
   ],
   'swDest': 'dist/public/sw.js',
-  'cacheId': 'mapeo-public-cache',
+  'cacheId': 'public-cache',
   'skipWaiting': true,
   'runtimeCaching': [{
     urlPattern: /public/,
     handler: 'staleWhileRevalidate',
     options: {
-      cacheName: 'mapeo-public-cache',
+      cacheName: 'static',
+      cacheableResponse: {statuses: [0, 200]}
+    }
+  }, {
+    urlPattern: /https:\/\/firestore.googleapis.com|https:\/\/firebasestorage.googleapis.com/,
+    handler: 'staleWhileRevalidate',
+    options: {
+      cacheName: 'dynamic',
       cacheableResponse: {statuses: [0, 200]}
     }
   }, {
@@ -20,7 +27,7 @@ module.exports = {
     // Any options provided will be used when
     // creating the caching strategy.
     options: {
-      cacheName: 'map-cache',
+      cacheName: 'map',
       cacheableResponse: {statuses: [0, 200]}
     }
   }],
