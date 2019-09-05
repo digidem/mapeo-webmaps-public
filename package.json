@@ -24,7 +24,6 @@
     "bankai": "8.1.1",
     "budo": "^10.0.4",
     "copyfiles": "^1.2.0",
-    "gh-pages": "^1.0.0",
     "mkdirp": "^0.5.1",
     "rimraf": "^2.6.2",
     "standard": "^10.0.2",
@@ -33,13 +32,11 @@
   "scripts": {
     "start": "budo index.js:bundle.js --live -P -d static -- -t sheetify",
     "lint": "standard",
-    "test": "npm run lint && npm run test-deps",
+    "test": "yarn lint && yarn test-deps",
     "test-deps": "dependency-check . && dependency-check . --extra --no-dev -i normalize.css",
-    "build": "rimraf dist && mkdirp dist && npm run build:js && npm run build:images && npm run build:static && workbox generate:sw",
+    "build": "rimraf dist && mkdirp dist && yarn build:js && yarn build:static && workbox generate:sw",
     "build:js": "NODE_ENV=production bankai build index.js && mv dist/bundle.js dist/bundle.es2015.js && babel dist/bundle.es2015.js > dist/bundle.js",
-    "build:static": "copyup 'static/**/*' dist",
-    "build:images": "sh bin/resize.sh",
-    "deploy": "npm run build && gh-pages -d dist"
+    "build:static": "copyup 'static/**/*' dist"
   },
   "author": "Digital Democracy",
   "license": "MIT"
