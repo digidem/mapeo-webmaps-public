@@ -15,6 +15,7 @@ if (process.env.NODE_ENV === 'production') {
 app.use(require('./models/map')())
 app.use(require('./models/features')())
 app.use(require('./models/modals')())
+app.use(require('./models/info')())
 
 app.route('/public/:userId/:mapId', require('./views/main')())
 app.route('/*', require('./views/404')())

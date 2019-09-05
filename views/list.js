@@ -60,13 +60,8 @@ ListView.prototype.createElement = function (props) {
   this.props = props
   return html`<div class='${listClass}'>
     <header>
-      <h1>Monitoring Reports</h1>
-      <p>
-        These reports from the Wapichan monitoring team document some of the key threats
-        and impacts to our ancestral territory from illegal mining and crossings into our territory
-        to steal cattle and illegally fish and hunt. The monitoring team has also been documenting
-        important resources and cultural sites throughout our territory. <a href='#' onclick=${props.onTermsClick}>Terms & Limitations</a>.
-      </p>
+      ${props.title && html`<h1>${props.title}</h1>`}
+      ${props.description && html`<p>${props.description}</p>`}
     </header>
     <div>
       ${props.features.sort(cmpDate).map(function (f) {

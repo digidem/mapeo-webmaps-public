@@ -10,6 +10,7 @@ const termsModal = require('./terms-modal')
 const mapEvents = require('../models/map').events
 const modalsEvents = require('../models/modals').events
 const featuresEvents = require('../models/features').events
+const infoEvents = require('../models/info').events
 
 const TITLE = 'Wapichan Monitoring'
 
@@ -95,10 +96,10 @@ function MainView () {
   const featureModal = new FeatureModal()
 
   return function mainView (state, emit) {
-    console.log(state)
     if (state.title !== TITLE) emit(state.events.DOMTITLECHANGE, TITLE)
     if (state.userId !== state.params.userId || state.mapId !== state.params.mapId) {
       emit(featuresEvents.LOAD, state.params.userId, state.params.mapId)
+      emit(infoEvents.LOAD, state.params.userId, state.params.mapId)
     }
     return html`
       <div class='${mainClass}'>
@@ -106,7 +107,9 @@ function MainView () {
           ${listView({
             onTermsClick: () => emit(modalsEvents.OPEN_TERMS_MODAL),
             features: state.features,
-            onClick: (id) => emit(mapEvents.ZOOM_TO, id)
+            onClick: (id) => emit(mapEvents.ZOOM_TO, id),
+            title: state.info && state.info.title,
+            description: state.info && state.info.description
           })}
         </div>
         <div class='right-column'>
