@@ -17,7 +17,7 @@ app.use(require('./models/features')())
 app.use(require('./models/modals')())
 app.use(require('./models/info')())
 
-app.route('/public/:userId/:mapId', require('./views/main')())
+app.route('/public/:userId/maps/:mapId', require('./views/main')())
 app.route('/*', require('./views/404')())
 
 if (!module.parent) {
