@@ -85,7 +85,7 @@ ListView.prototype.createElement = function (props) {
 // Implement conditional rendering
 ListView.prototype.update = function (nextProps) {
   var shouldUpdate = false
-  if (nextProps.features !== this.props.features) {
+  if (nextProps.features !== this.props.features || nextProps.title !== this.props.title) {
     shouldUpdate = true
   }
   this.props = nextProps
