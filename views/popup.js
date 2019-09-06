@@ -175,7 +175,7 @@ Popup.prototype.update = function (nextProps) {
 Popup.prototype._getPopupAnchor = function (pos) {
   const s = this.state
   let anchor
-  if (pos.y < s.height) {
+  if (pos.y < s.height && (pos.y + s.height) < s.parentHeight) {
     anchor = ['top']
   } else if (pos.y > s.parentHeight - s.height) {
     anchor = ['bottom']
