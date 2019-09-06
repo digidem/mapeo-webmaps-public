@@ -11,10 +11,10 @@ const API_BASE = 'https://firestore.googleapis.com/v1beta1/projects/mapeo-webmap
 
 function InfoModel () {
   return function featuresModel (state, emitter) {
-    state.info = state.info || []
+    state.info = state.info || {}
 
     emitter.on(events.LOAD, function (userId, mapId) {
-      state.info = []
+      state.info = {}
       emitter.emit(state.events.RENDER)
       state.userId = userId
       state.mapId = mapId

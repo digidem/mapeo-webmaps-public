@@ -12,8 +12,6 @@ const modalsEvents = require('../models/modals').events
 const featuresEvents = require('../models/features').events
 const infoEvents = require('../models/info').events
 
-const TITLE = 'Wapichan Monitoring'
-
 const mainClass = css`
   :host {
     font-family: system-ui, -apple-system, BlinkMacSystemFont,
@@ -96,7 +94,9 @@ function MainView () {
   const featureModal = new FeatureModal()
 
   return function mainView (state, emit) {
-    if (state.title !== TITLE) emit(state.events.DOMTITLECHANGE, TITLE)
+    if (state.title !== state.info.title && state.info.title) {
+      emit(state.events.DOMTITLECHANGE, state.info.title)
+    }
     if (state.userId !== state.params.userId || state.mapId !== state.params.mapId) {
       emit(featuresEvents.LOAD, state.params.userId, state.params.mapId)
       emit(infoEvents.LOAD, state.params.userId, state.params.mapId)
