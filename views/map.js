@@ -44,7 +44,6 @@ MapView.prototype.createElement = function (props) {
 }
 
 MapView.prototype.load = function (el) {
-  console.log(this.props.mapStyle)
   const map = this.map = window.map = new mapboxgl.Map({
     container: el,
     style: this.props.mapStyle, // stylesheet location
@@ -135,19 +134,11 @@ MapView.prototype.update = function (nextProps) {
 
 MapView.prototype._setMapStyle = function (styleUrl) {
   const map = this.map
-  if (map.isStyleLoaded()) {
-    map.setStyle(styleUrl)
-    map.once('styledata', () => {
-      this._setupLayers()
-    })
-  } else {
-    map.once('styledata', () => {
-      map.setStyle(styleUrl)
-      map.once('styledata', () => {
-        this._setupLayers()
-      })
-    })
+  if (!map.style || !map.style._loaded) {
+    return map.once('style.load', () => this._setMapStyle(styleUrl))
   }
+  map.setStyle(styleUrl)
+  this._setupLayers()
 }
 
 MapView.prototype._ready = function (cb) {
@@ -160,6 +151,9 @@ MapView.prototype._ready = function (cb) {
 
 MapView.prototype._setupLayers = function () {
   const map = this.map
+  if (!map.style || !map.style._loaded) {
+    return map.once('style.load', () => this._setupLayers())
+  }
   if (!map.getSource('features')) {
     map.addSource('features', {
       type: 'geojson',
@@ -172,6 +166,7 @@ MapView.prototype._setupLayers = function () {
   if (!map.getLayer(styles.pointsHover.id)) map.addLayer(styles.pointsHover)
 
   const replaceableBingLayer = map.getLayer('mapeo-bing-layer')
+
   if (!replaceableBingLayer) return
   map.setLayoutProperty('mapeo-bing-layer', 'visibility', 'none')
 
