@@ -53,11 +53,7 @@ MapView.prototype.load = function (el) {
     dragRotate: false
   }).on('load', () => {
     this.state.loaded = true
-    map.addSource('features', {type: 'geojson', data: featureCollection([]), buffer: 0})
-    map.addSource('bing', styles.bingSource)
-    map.addLayer(styles.points)
-    map.addLayer(styles.pointsHover)
-    // map.addLayer(styles.bing, 'landcover_crop')
+    this._setupLayers()
 
     if (!map.isMoving()) {
       map.fitBounds(TERRITORY_BOUNDS, {padding: 20, speed: 0.4})
@@ -128,12 +124,7 @@ MapView.prototype.update = function (nextProps) {
   }
 
   if (nextProps.mapStyle !== this.props.mapStyle) {
-    if (map.isStyleLoaded()) map.setStyle(nextProps.mapStyle)
-    else {
-      map.once('styledata', function () {
-        map.setStyle(nextProps.mapStyle)
-      })
-    }
+    this._setMapStyle(nextProps.mapStyle + '?fresh=true')
   }
 
   this.props = nextProps
@@ -142,12 +133,40 @@ MapView.prototype.update = function (nextProps) {
   return false
 }
 
+MapView.prototype._setMapStyle = function (styleUrl) {
+  const map = this.map
+  if (map.isStyleLoaded()) {
+    map.setStyle(styleUrl)
+    map.once('styledata', () => {
+      this._setupLayers()
+    })
+  } else {
+    map.once('styledata', () => {
+      map.setStyle(styleUrl)
+      map.once('styledata', () => {
+        this._setupLayers()
+      })
+    })
+  }
+}
+
 MapView.prototype._ready = function (cb) {
   if (this.state.loaded) {
     process.nextTick(cb)
   } else {
     this.map.on('load', cb)
   }
+}
+
+MapView.prototype._setupLayers = function () {
+  const map = this.map
+  if (!map.getSource('features')) {
+    map.addSource('features', {type: 'geojson', data: featureCollection(this.props.features || []), buffer: 0})
+  }
+  if (!map.getSource('bing')) map.addSource('bing', styles.bingSource)
+  if (!map.getLayer(styles.points.id)) map.addLayer(styles.points)
+  if (!map.getLayer(styles.pointsHover.id)) map.addLayer(styles.pointsHover)
+  if (map.getLayer('mapeo-bing-layer') && !map.getLayer(styles.bing.id)) map.addLayer(styles.bing, 'mapeo-bing-layer')
 }
 
 function featureCollection (features) {
