@@ -117,6 +117,7 @@ function MainView () {
             features: state.features,
             zoomFeature: state.zoomFeature,
             popupFeature: state.popupFeature,
+            mapStyle: state.info.mapStyle,
             onClick: (feature, map) => {
               if (feature) {
                 emit(mapEvents.SHOW_POPUP, {feature: feature, map: map})

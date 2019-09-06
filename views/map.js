@@ -44,9 +44,10 @@ MapView.prototype.createElement = function (props) {
 }
 
 MapView.prototype.load = function (el) {
+  console.log(this.props.mapStyle)
   const map = this.map = window.map = new mapboxgl.Map({
     container: el,
-    style: 'mapbox://styles/mapbox/outdoors-v11', // stylesheet location
+    style: this.props.mapStyle, // stylesheet location
     center: [-59.4377, 2.6658], // starting position
     zoom: 5.5, // starting zoom
     dragRotate: false
@@ -56,7 +57,7 @@ MapView.prototype.load = function (el) {
     map.addSource('bing', styles.bingSource)
     map.addLayer(styles.points)
     map.addLayer(styles.pointsHover)
-    map.addLayer(styles.bing, 'landcover_crop')
+    // map.addLayer(styles.bing, 'landcover_crop')
 
     if (!map.isMoving()) {
       map.fitBounds(TERRITORY_BOUNDS, {padding: 20, speed: 0.4})
@@ -124,6 +125,15 @@ MapView.prototype.update = function (nextProps) {
     this._ready(function () {
       map.getSource('features').setData(featureCollection(nextProps.features))
     })
+  }
+
+  if (nextProps.mapStyle !== this.props.mapStyle) {
+    if (map.isStyleLoaded()) map.setStyle(nextProps.mapStyle)
+    else {
+      map.once('styledata', function () {
+        map.setStyle(nextProps.mapStyle)
+      })
+    }
   }
 
   this.props = nextProps
