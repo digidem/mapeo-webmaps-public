@@ -46,7 +46,7 @@ MapView.prototype.createElement = function (props) {
 MapView.prototype.load = function (el) {
   const map = this.map = window.map = new mapboxgl.Map({
     container: el,
-    style: 'mapbox://styles/gmaclennan/cj7ljlyqy8gq52rrptj0zy6w7?fresh=true&optimize=true', // stylesheet location
+    style: 'mapbox://styles/mapbox/outdoors-v11', // stylesheet location
     center: [-59.4377, 2.6658], // starting position
     zoom: 5.5, // starting zoom
     dragRotate: false
