@@ -30,7 +30,7 @@
     "workbox-cli": "^2.0.1"
   },
   "scripts": {
-    "start": "budo index.js:public/bundle.js --live -P -d static -- -t sheetify",
+    "start": "budo index.js:public/bundle.js --live -P -d static/public --base /public -- -t sheetify",
     "lint": "standard",
     "test": "yarn lint && yarn test-deps",
     "test-deps": "dependency-check . && dependency-check . --extra --no-dev -i normalize.css",
