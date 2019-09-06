@@ -161,12 +161,27 @@ MapView.prototype._ready = function (cb) {
 MapView.prototype._setupLayers = function () {
   const map = this.map
   if (!map.getSource('features')) {
-    map.addSource('features', {type: 'geojson', data: featureCollection(this.props.features || []), buffer: 0})
+    map.addSource('features', {
+      type: 'geojson',
+      data: featureCollection(this.props.features || []),
+      buffer: 0
+    })
   }
   if (!map.getSource('bing')) map.addSource('bing', styles.bingSource)
   if (!map.getLayer(styles.points.id)) map.addLayer(styles.points)
   if (!map.getLayer(styles.pointsHover.id)) map.addLayer(styles.pointsHover)
-  if (map.getLayer('mapeo-bing-layer') && !map.getLayer(styles.bing.id)) map.addLayer(styles.bing, 'mapeo-bing-layer')
+
+  const replaceableBingLayer = map.getLayer('mapeo-bing-layer')
+  if (!replaceableBingLayer) return
+  map.setLayoutProperty('mapeo-bing-layer', 'visibility', 'none')
+
+  styles.bing.minzoom = replaceableBingLayer.minzoom || 0
+  styles.bing.maxzoom = replaceableBingLayer.maxzoom || 22
+
+  if (map.getLayer(styles.bing.id)) map.removeLayer(styles.bing.id)
+  map.addLayer(styles.bing, 'mapeo-bing-layer')
+  const opacity = map.getPaintProperty('mapeo-bing-layer', 'background-opacity')
+  map.setPaintProperty(styles.bing.id, 'raster-opacity', opacity)
 }
 
 function featureCollection (features) {
