@@ -1,4 +1,3 @@
-const d3 = require('d3-request/build/d3-request.js')
 const parseFirestore = require('firestore-parser')
 
 module.exports = InfoModel
@@ -23,11 +22,10 @@ function InfoModel () {
       state.userId = userId
       state.mapId = mapId
       const url = `${API_BASE}groups/${userId}/maps/${mapId}`
-      d3.json(url, function (err, _data) {
-        if (err) return console.error(err)
+      window.fetch(url).then(response => response.json()).then(_data => {
         state.info = parseFirestore(_data).fields
         emitter.emit(state.events.RENDER)
-      })
+      }).catch(console.error)
     })
   }
 }

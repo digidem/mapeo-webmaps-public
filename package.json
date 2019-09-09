@@ -6,7 +6,6 @@
   "dependencies": {
     "choo": "^7.0.0",
     "choo-devtools": "^3.0.1",
-    "d3-request": "^1.0.6",
     "date-fns": "^1.28.5",
     "firestore-parser": "^0.8.9",
     "mapbox-gl": "^1.2.1",
