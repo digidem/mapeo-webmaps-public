@@ -22,6 +22,7 @@
     "@babel/core": "^7.6.0",
     "@babel/preset-env": "^7.6.0",
     "babelify": "^10.0.0",
+    "browser-pack-flat": "^3.4.2",
     "browserify": "^16.5.0",
     "budo": "^11.6.3",
     "copyfiles": "^2.1.1",
@@ -30,6 +31,7 @@
     "mkdirp": "^0.5.1",
     "rimraf": "^3.0.0",
     "standard": "^14.1.0",
+    "uglify-js": "^3.6.0",
     "uglifyify": "^5.0.2",
     "unassertify": "^2.1.1",
     "workbox-cli": "^2.0.1"
@@ -40,7 +42,7 @@
     "test": "yarn lint && yarn test-deps",
     "test-deps": "dependency-check . && dependency-check . --extra --no-dev -i normalize.css",
     "build": "rimraf dist && mkdirp dist && yarn build:js && yarn build:static && workbox generate:sw",
-    "build:js": "NODE_ENV=production browserify index.js -g [ uglifyify ] --transform-key=production -p [ css-extract -o dist/bundle.css ] -p [ split-require --out dist --public / ] -o dist/bundle.js",
+    "build:js": "NODE_ENV=production browserify index.js -g [ uglifyify ] --transform-key=production -p [ css-extract -o dist/bundle.css ] -p [ split-require --out dist --public / ] -p browser-pack-flat | uglifyjs -c -m -o dist/bundle.js",
     "build:static": "copyup 'static/**/*' dist"
   },
   "author": "Digital Democracy",
