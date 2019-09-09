@@ -40,7 +40,7 @@
     "test": "yarn lint && yarn test-deps",
     "test-deps": "dependency-check . && dependency-check . --extra --no-dev -i normalize.css",
     "build": "rimraf dist && mkdirp dist && yarn build:js && yarn build:static && workbox generate:sw",
-    "build:js": "NODE_ENV=production browserify index.js -g uglifyify -g unassertify --transform-key=production -p [ css-extract -o dist/bundle.css ] -p [ split-require --out dist --public / ] -p browser-pack-flat | uglifyjs --source-map 'content=inline' -c -m -o dist/bundle.js",
+    "build:js": "NODE_ENV=production browserify index.js -g unassertify -g uglifyify --transform-key=production -p [ css-extract -o dist/bundle.css ] -p [ split-require --out 'uglifyjs -c -m > dist/%f' --public / ] -p browser-pack-flat | uglifyjs -c -m -o dist/bundle.js",
     "build:static": "copyup 'static/**/*' dist"
   },
   "author": "Digital Democracy",
