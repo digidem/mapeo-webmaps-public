@@ -1,6 +1,9 @@
 name: Node CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -9,13 +12,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js 10
       uses: actions/setup-node@v1
       with:
         node-version: 10.x
-    - name: yarn install, build, and test
+    - name: Build app
       run: |
         yarn install
         yarn run build
       env:
         CI: true
+    - name: Deploy to S3
+      run: |
+        yarn deploy
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
