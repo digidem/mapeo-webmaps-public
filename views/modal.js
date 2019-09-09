@@ -2,7 +2,7 @@ const Nanocomponent = require('nanocomponent')
 const morph = require('nanomorph')
 const html = require('choo/html')
 const css = require('sheetify')
-const omit = require('lodash/omit')
+const omit = require('../lib/utils').omit
 
 const modalClass = css`
   @keyframes tdFadeBackgroundIn {
