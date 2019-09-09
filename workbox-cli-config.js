@@ -1,13 +1,13 @@
 module.exports = {
-  'globDirectory': 'dist/public',
+  'globDirectory': 'dist',
   'globPatterns': [
     '**/*.{js,json,jpg,html,png,css}'
   ],
-  'swDest': 'dist/public/sw.js',
+  'swDest': 'dist/sw.js',
   'cacheId': 'public-cache',
   'skipWaiting': true,
   'runtimeCaching': [{
-    urlPattern: /public/,
+    urlPattern: /assets/,
     handler: 'staleWhileRevalidate',
     options: {
       cacheName: 'static',

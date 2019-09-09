@@ -30,7 +30,7 @@ const imageClass = css`
 `
 module.exports = image
 
-const MISSING_URL = '/public/missing.png'
+const MISSING_URL = '/missing.png'
 
 function image (props) {
   const ratio = props.ratio || '4x3'

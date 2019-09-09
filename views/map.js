@@ -8,11 +8,9 @@ const styles = require('../lib/map-styles')
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiZ21hY2xlbm5hbiIsImEiOiJSaWVtd2lRIn0.ASYMZE2HhwkAw4Vt7SavEg'
 
-css('mapbox-gl/dist/mapbox-gl.css')
-
 const mapClass = css`
+  :host { position:absolute; height: 100%; width:100%; }
   .mapboxgl-ctrl-group > button.mapboxgl-ctrl-compass { display: none; }
-  :host { position:absolute; top:0; bottom:0; width:100%; }
 `
 
 const INITIAL_BOUNDS = [[-65, -5], [-52, 12]]
@@ -39,7 +37,7 @@ MapView.prototype.createElement = function (props) {
   // this.emit = emit
   this.props = props
   return html`
-    <div class='${mapClass}'></div>
+    <div class=${mapClass}></div>
   `
 }
 

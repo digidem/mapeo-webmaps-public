@@ -1,7 +1,7 @@
 const html = require('choo/html')
 const css = require('sheetify')
+const splitRequire = require('split-require')
 
-const MapView = require('./map')
 const ListView = require('./list')
 const Popup = require('./popup')
 const Modal = require('./modal')
@@ -85,13 +85,26 @@ const mainClass = css`
 
 module.exports = MainView
 
-function MainView () {
-  const mapView = new MapView().render
+const loading = () => html`<h1>Loading…</h1>`
+
+function MainView (app) {
+  let mapView
   const listView = new ListView().render
   const popup = new Popup().render
   const featureModalContainer = new Modal()
   const termsModalContainer = new Modal()
   const featureModal = new FeatureModal()
+
+  if (process.env.NODE_ENV === 'production') {
+    splitRequire('./map', function (err, MapView) {
+      if (err) return console.error(err)
+      mapView = new MapView()
+      app.emitter.emit('render')
+    })
+  } else {
+    const MapView = require('./map')
+    mapView = new MapView()
+  }
 
   return function mainView (state, emit) {
     if (state.title !== state.info.title && state.info.title) {
@@ -113,7 +126,7 @@ function MainView () {
           })}
         </div>
         <div class='right-column'>
-          ${mapView({
+          ${mapView ? mapView.render({
             features: state.features,
             zoomFeature: state.zoomFeature,
             popupFeature: state.popupFeature,
@@ -136,7 +149,7 @@ function MainView () {
                 emit(mapEvents.CANCEL_ZOOM)
               }
             }
-          })}
+          }) : loading()}
           ${state.popupFeature && popup({
             feature: state.popupFeature,
             point: state.popupPoint,

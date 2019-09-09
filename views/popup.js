@@ -9,6 +9,8 @@ const popupClass = css`
   :host {
     position: absolute;
     transform: translate(0, 0);
+    top: 0;
+    left: 0;
     will-change: transform;
     pointer-events: none;
     width: 300px;
