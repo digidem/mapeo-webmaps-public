@@ -47,7 +47,7 @@
   "author": "Digital Democracy",
   "license": "MIT",
   "browserify": {
-    "transforms": [
+    "transform": [
       "sheetify"
     ]
   },
