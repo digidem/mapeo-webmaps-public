@@ -23,32 +23,35 @@ function FeaturesModel () {
       const url = `${API_BASE}groups/${userId}/maps/${mapId}/observations`
       window
         .fetch(url)
-        .then(response => response.json())
+        .then(response => {
+          if (response.status !== 200) throw new Error('Not Found')
+          return response.json()
+        })
         .then(_data => {
           state.features = parse(_data, userId)
           emitter.emit(state.events.RENDER)
         })
-        .catch(console.error)
+        .catch(e => {
+          console.error(e)
+          state.notFound = true
+          emitter.emit(state.events.RENDER)
+        })
     })
   }
 }
 
 function parse (firestoreData, userId) {
-  try {
-    return parseFirestore(firestoreData).documents.map(function (doc) {
-      const f = doc.fields
-      f.properties.date = new Date(f.properties.date.split('T')[0])
-      const imageId = f.properties.image
-      if (imageId) {
-        f.properties.image = `${IMAGE_BASE}images%2F${userId}%2Foriginal%2F${
-          f.properties.image
-        }?alt=media`
-      } else {
-        delete f.properties.image
-      }
-      return f
-    })
-  } catch (e) {
-    console.error(e)
-  }
+  return parseFirestore(firestoreData).documents.map(function (doc) {
+    const f = doc.fields
+    f.properties.date = new Date(f.properties.date.split('T')[0])
+    const imageId = f.properties.image
+    if (imageId) {
+      f.properties.image = `${IMAGE_BASE}images%2F${userId}%2Foriginal%2F${
+        f.properties.image
+      }?alt=media`
+    } else {
+      delete f.properties.image
+    }
+    return f
+  })
 }

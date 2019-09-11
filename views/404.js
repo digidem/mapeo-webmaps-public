@@ -89,14 +89,12 @@ const className = css`
 `
 
 module.exports = function () {
-  return function () {
-    return html`
-      <div class="${className}">
-        <section>
-          <span>404</span>
-          <p>Page Not Found</p>
-        </section>
-      </div>
-    `
-  }
+  return html`
+    <div class="${className}">
+      <section>
+        <span>404</span>
+        <p>Page Not Found</p>
+      </section>
+    </div>
+  `
 }

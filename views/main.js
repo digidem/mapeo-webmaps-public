@@ -11,6 +11,7 @@ const mapEvents = require('../models/map').events
 const modalsEvents = require('../models/modals').events
 const featuresEvents = require('../models/features').events
 const infoEvents = require('../models/info').events
+const notFound = require('./404')
 
 const mainClass = css`
   :host,
@@ -121,6 +122,8 @@ function MainView (app) {
       emit(featuresEvents.LOAD, state.params.userId, state.params.mapId)
       emit(infoEvents.LOAD, state.params.userId, state.params.mapId)
     }
+
+    if (state.notFound) return notFound()
     return html`
       <div class="${mainClass}">
         <div class="left-column">
