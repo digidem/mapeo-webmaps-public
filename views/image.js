@@ -22,10 +22,11 @@ const imageClass = css`
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    background-color: #eeeeee;
   }
   :host > *.missing {
     background-size: 66.67%;
-    background-color: #dddddd;
+    background-color: #eeeeee;
   }
 `
 module.exports = image
@@ -36,7 +37,7 @@ function image (props) {
   const ratio = props.ratio || '4x3'
   if (!props.url && !props.showMissing) return null
   return html`
-    <div class="${imageClass} ratio-${ratio}" onclick=${props.onClick}>
+    <div class="${imageClass} ratio-${ratio}" onclick="${props.onClick}">
       <div
         style="background-image: url(${props.url || MISSING_URL})"
         class="${props.url ? '' : 'missing'}"
