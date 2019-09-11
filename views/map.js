@@ -20,8 +20,41 @@ const mapClass = css`
   }
 `
 
+const fitBoundsClass = css`
+  :host {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M3 5v4h2V5h4V3H5c-1.1 0-2 .9-2 2zm2 10H3v4c0 1.1.9 2 2 2h4v-2H5v-4zm14 4h-4v2h4c1.1 0 2-.9 2-2v-4h-2v4zm0-16h-4v2h4v4h2V5c0-1.1-.9-2-2-2z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+`
+
 const FLY_TO_ZOOM = 12.5
 const DEG_PER_PIXEL = 360 / Math.pow(2, FLY_TO_ZOOM) / 512
+
+class FitBoundsControl {
+  constructor (onClick) {
+    this.onClick = onClick
+  }
+
+  onAdd (map) {
+    this._container = html`
+      <div class="mapboxgl-ctrl mapboxgl-ctrl-group">
+        <button
+          class="mapboxgl-ctrl-icon ${fitBoundsClass}"
+          type="button"
+          title="Zoom to data"
+          aria-label="Zoom to data"
+          onclick="${this.onClick}"
+        ></button>
+      </div>
+    `
+    return this._container
+  }
+
+  onRemove () {
+    this._container.parentNode.removeChild(this._container)
+  }
+}
 
 module.exports = MapView
 
@@ -42,7 +75,7 @@ MapView.prototype.createElement = function (props) {
   // this.emit = emit
   this.props = props
   return html`
-    <div class=${mapClass}></div>
+    <div class="${mapClass}"></div>
   `
 }
 
@@ -57,7 +90,7 @@ MapView.prototype.load = function (el) {
 
     if (this.props.features && this.props.features.length) {
       this.fitBounds(this.props.features)
-      console.log('bounds on load', this.props.features)
+      this._hasDoneInitialZoom = true
     }
 
     map.on('mousemove', 'points', e => {
@@ -98,6 +131,13 @@ MapView.prototype.load = function (el) {
   }))
 
   map.addControl(new mapboxgl.NavigationControl(), 'top-left')
+  map.addControl(new mapboxgl.ScaleControl({ maxWidth: 80 }))
+  map.addControl(
+    new FitBoundsControl(() =>
+      this.fitBounds(this.props.features, { speed: 1 })
+    ),
+    'top-left'
+  )
 }
 
 // Implement conditional rendering
@@ -139,7 +179,10 @@ MapView.prototype.update = function (nextProps) {
     this._ready(function () {
       map.getSource('features').setData(featureCollection(nextProps.features))
     })
-    this.fitBounds(nextProps.features)
+    if (!this._hasDoneInitialZoom) {
+      this.fitBounds(nextProps.features)
+      this._hasDoneInitialZoom = true
+    }
   }
 
   if (nextProps.mapStyle !== this.props.mapStyle) {
@@ -152,14 +195,17 @@ MapView.prototype.update = function (nextProps) {
   return false
 }
 
-MapView.prototype.fitBounds = function (features) {
-  if (this._hasZoomedToBounds) return
+const defaultFitBoundsOpts = {
+  padding: 40,
+  speed: 0.4,
+  maxZoom: 12
+}
+
+MapView.prototype.fitBounds = function (features, opts) {
   this.map.fitBounds(getBounds(features), {
-    padding: 40,
-    speed: 0.4,
-    maxZoom: 12
+    ...defaultFitBoundsOpts,
+    ...opts
   })
-  this._hasZoomedToBounds = true
 }
 
 MapView.prototype._setMapStyle = function (styleUrl) {
