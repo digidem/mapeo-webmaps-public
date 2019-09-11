@@ -13,7 +13,8 @@ const featuresEvents = require('../models/features').events
 const infoEvents = require('../models/info').events
 
 const mainClass = css`
-  :host {
+  :host,
+  body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
       'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
       'Helvetica Neue', sans-serif;
@@ -123,75 +124,85 @@ function MainView (app) {
     return html`
       <div class="${mainClass}">
         <div class="left-column">
-          ${listView({
-            onTermsClick: () => emit(modalsEvents.OPEN_TERMS_MODAL),
-            features: state.features,
-            onClick: id => emit(mapEvents.ZOOM_TO, id),
-            title: state.info && state.info.title,
-            description: state.info && state.info.description
-          })}
+          ${
+  listView({
+    onTermsClick: () => emit(modalsEvents.OPEN_TERMS_MODAL),
+    features: state.features,
+    onClick: id => emit(mapEvents.ZOOM_TO, id),
+    title: state.info && state.info.title,
+    description: state.info && state.info.description
+  })
+}
         </div>
         <div class="right-column">
-          ${mapView
-            ? mapView.render({
-                features: state.features,
-                zoomFeature: state.zoomFeature,
-                popupFeature: state.popupFeature,
-                mapStyle: state.info.mapStyle,
-                onClick: (feature, map) => {
-                  if (feature) {
-                    emit(mapEvents.SHOW_POPUP, { feature: feature, map: map })
-                    return
-                  }
-                  if (state.zoomFeature) {
-                    emit(mapEvents.CANCEL_ZOOM)
-                  }
-                  emit(mapEvents.CLOSE_POPUP)
-                },
-                onMove: (e, map) => {
-                  if (state.popupFeature) {
-                    emit(mapEvents.MOVE_POPUP, { event: e, map: map })
-                  }
-                  if (e.originalEvent && state.zoomFeature) {
-                    emit(mapEvents.CANCEL_ZOOM)
-                  }
-                }
+          ${
+  mapView
+    ? mapView.render({
+      features: state.features,
+      zoomFeature: state.zoomFeature,
+      popupFeature: state.popupFeature,
+      mapStyle: state.info.mapStyle,
+      onClick: (feature, map) => {
+        if (feature) {
+          emit(mapEvents.SHOW_POPUP, { feature: feature, map: map })
+          return
+        }
+        if (state.zoomFeature) {
+          emit(mapEvents.CANCEL_ZOOM)
+        }
+        emit(mapEvents.CLOSE_POPUP)
+      },
+      onMove: (e, map) => {
+        if (state.popupFeature) {
+          emit(mapEvents.MOVE_POPUP, { event: e, map: map })
+        }
+        if (e.originalEvent && state.zoomFeature) {
+          emit(mapEvents.CANCEL_ZOOM)
+        }
+      }
+    })
+    : loading()
+}
+          ${
+  state.popupFeature &&
+              popup({
+                feature: state.popupFeature,
+                point: state.popupPoint,
+                anchor: state.zoomFeature && 'bottom',
+                onClick: e =>
+                  emit(modalsEvents.OPEN_FEATURE_MODAL, {
+                    feature: state.popupFeature,
+                    event: e
+                  }),
+                close: () => emit(mapEvents.CLOSE_POPUP)
               })
-            : loading()}
-          ${state.popupFeature &&
-            popup({
-              feature: state.popupFeature,
-              point: state.popupPoint,
-              anchor: state.zoomFeature && 'bottom',
-              onClick: e =>
-                emit(modalsEvents.OPEN_FEATURE_MODAL, {
-                  feature: state.popupFeature,
-                  event: e
-                }),
-              close: () => emit(mapEvents.CLOSE_POPUP)
-            })}
+}
         </div>
-        ${featureModalContainer.render({
-          open: state.featureModalOpen,
-          close: () => {
-            emit(modalsEvents.CLOSE_FEATURE_MODAL)
-          },
-          render: () =>
-            featureModal.render({
-              feature: state.featureModal,
-              close: () => {
-                emit(modalsEvents.CLOSE_FEATURE_MODAL)
-              }
-            })
-        })}
-        ${termsModalContainer.render({
-          open: state.termsModalOpen,
-          close: () => emit(modalsEvents.CLOSE_TERMS_MODAL),
-          render: () =>
-            termsModal({
-              close: () => emit(modalsEvents.CLOSE_TERMS_MODAL)
-            })
-        })}
+        ${
+  featureModalContainer.render({
+    open: state.featureModalOpen,
+    close: () => {
+      emit(modalsEvents.CLOSE_FEATURE_MODAL)
+    },
+    render: () =>
+      featureModal.render({
+        feature: state.featureModal,
+        close: () => {
+          emit(modalsEvents.CLOSE_FEATURE_MODAL)
+        }
+      })
+  })
+}
+        ${
+  termsModalContainer.render({
+    open: state.termsModalOpen,
+    close: () => emit(modalsEvents.CLOSE_TERMS_MODAL),
+    render: () =>
+      termsModal({
+        close: () => emit(modalsEvents.CLOSE_TERMS_MODAL)
+      })
+  })
+}
       </div>
     `
   }
