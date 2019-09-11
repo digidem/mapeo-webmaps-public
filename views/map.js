@@ -13,8 +13,6 @@ const mapClass = css`
   .mapboxgl-ctrl-group > button.mapboxgl-ctrl-compass { display: none; }
 `
 
-const INITIAL_BOUNDS = [[-65, -5], [-52, 12]]
-const TERRITORY_BOUNDS = [[-60, 1.74], [-58.09, 3.36]]
 const FLY_TO_ZOOM = 12.5
 const DEG_PER_PIXEL = 360 / Math.pow(2, FLY_TO_ZOOM) / 512
 
@@ -45,15 +43,14 @@ MapView.prototype.load = function (el) {
   const map = this.map = window.map = new mapboxgl.Map({
     container: el,
     style: this.props.mapStyle, // stylesheet location
-    center: [-59.4377, 2.6658], // starting position
-    zoom: 5.5, // starting zoom
     dragRotate: false
   }).on('load', () => {
     this.state.loaded = true
     this._setupLayers()
 
-    if (!map.isMoving()) {
-      map.fitBounds(TERRITORY_BOUNDS, {padding: 20, speed: 0.4})
+    if (this.props.features && this.props.features.length) {
+      this.fitBounds(this.props.features)
+      console.log('bounds on load', this.props.features)
     }
 
     map.on('mousemove', 'points', (e) => {
@@ -84,7 +81,6 @@ MapView.prototype.load = function (el) {
     map.on('move', (e) => this.props.onMove(e, map))
   })
 
-  map.fitBounds(INITIAL_BOUNDS, {easing: () => 1})
   map.addControl(new mapboxgl.NavigationControl(), 'top-left')
 }
 
@@ -118,6 +114,7 @@ MapView.prototype.update = function (nextProps) {
     this._ready(function () {
       map.getSource('features').setData(featureCollection(nextProps.features))
     })
+    this.fitBounds(nextProps.features)
   }
 
   if (nextProps.mapStyle !== this.props.mapStyle) {
@@ -128,6 +125,16 @@ MapView.prototype.update = function (nextProps) {
 
   // never render
   return false
+}
+
+MapView.prototype.fitBounds = function (features) {
+  if (this._hasZoomedToBounds) return
+  this.map.fitBounds(getBounds(features), {
+    padding: 40,
+    speed: 0.4,
+    maxZoom: 12
+  })
+  this._hasZoomedToBounds = true
 }
 
 MapView.prototype._setMapStyle = function (styleUrl) {
@@ -183,4 +190,16 @@ function featureCollection (features) {
     type: 'FeatureCollection',
     features: features
   }
+}
+
+function getBounds (features = []) {
+  const extent = [[-180, -85], [180, 85]]
+  for (const { geometry: { coordinates: [lon, lat] = [] } = {} } of features) {
+    if (lon == null || lat == null) continue
+    if (extent[0][0] < lon) extent[0][0] = lon
+    if (extent[0][1] < lat) extent[0][1] = lat
+    if (extent[1][0] > lon) extent[1][0] = lon
+    if (extent[1][1] > lat) extent[1][1] = lat
+  }
+  return extent
 }
