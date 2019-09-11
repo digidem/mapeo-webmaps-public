@@ -2,11 +2,12 @@ const parseFirestore = require('firestore-parser')
 
 module.exports = InfoModel
 
-const events = InfoModel.events = {
+const events = (InfoModel.events = {
   LOAD: 'info:load'
-}
+})
 
-const API_BASE = 'https://firestore.googleapis.com/v1beta1/projects/mapeo-webmaps/databases/(default)/documents/'
+const API_BASE =
+  'https://firestore.googleapis.com/v1beta1/projects/mapeo-webmaps/databases/(default)/documents/'
 
 function InfoModel () {
   return function featuresModel (state, emitter) {
@@ -22,10 +23,14 @@ function InfoModel () {
       state.userId = userId
       state.mapId = mapId
       const url = `${API_BASE}groups/${userId}/maps/${mapId}`
-      window.fetch(url).then(response => response.json()).then(_data => {
-        state.info = parseFirestore(_data).fields
-        emitter.emit(state.events.RENDER)
-      }).catch(console.error)
+      window
+        .fetch(url)
+        .then(response => response.json())
+        .then(_data => {
+          state.info = parseFirestore(_data).fields
+          emitter.emit(state.events.RENDER)
+        })
+        .catch(console.error)
     })
   }
 }

@@ -19,22 +19,22 @@ const popupClass = css`
   :host.anchor-top,
   :host.anchor-top-left,
   :host.anchor-top-right {
-      -webkit-flex-direction: column;
-      flex-direction: column;
+    -webkit-flex-direction: column;
+    flex-direction: column;
   }
   :host.anchor-bottom,
   :host.anchor-bottom-left,
   :host.anchor-bottom-right {
-      -webkit-flex-direction: column-reverse;
-      flex-direction: column-reverse;
+    -webkit-flex-direction: column-reverse;
+    flex-direction: column-reverse;
   }
   :host.anchor-left {
-      -webkit-flex-direction: row;
-      flex-direction: row;
+    -webkit-flex-direction: row;
+    flex-direction: row;
   }
   :host.anchor-right {
-      -webkit-flex-direction: row-reverse;
-      flex-direction: row-reverse;
+    -webkit-flex-direction: row-reverse;
+    flex-direction: row-reverse;
   }
   :host .popup-tip {
     cursor: pointer;
@@ -50,72 +50,72 @@ const popupClass = css`
     border-bottom-color: #fff;
   }
   :host.anchor-top-left .popup-tip {
-      -webkit-align-self: flex-start;
-      align-self: flex-start;
-      border-top: none;
-      border-left: none;
-      border-bottom-color: #fff;
+    -webkit-align-self: flex-start;
+    align-self: flex-start;
+    border-top: none;
+    border-left: none;
+    border-bottom-color: #fff;
   }
   :host.anchor-top-right .popup-tip {
-      -webkit-align-self: flex-end;
-      align-self: flex-end;
-      border-top: none;
-      border-right: none;
-      border-bottom-color: #fff;
+    -webkit-align-self: flex-end;
+    align-self: flex-end;
+    border-top: none;
+    border-right: none;
+    border-bottom-color: #fff;
   }
   :host.anchor-bottom .popup-tip {
-      -webkit-align-self: center;
-      align-self: center;
-      border-bottom: none;
-      border-top-color: #fff;
+    -webkit-align-self: center;
+    align-self: center;
+    border-bottom: none;
+    border-top-color: #fff;
   }
   :host.anchor-bottom-left .popup-tip {
-      -webkit-align-self: flex-start;
-      align-self: flex-start;
-      border-bottom: none;
-      border-left: none;
-      border-top-color: #fff;
+    -webkit-align-self: flex-start;
+    align-self: flex-start;
+    border-bottom: none;
+    border-left: none;
+    border-top-color: #fff;
   }
   :host.anchor-bottom-right .popup-tip {
-      -webkit-align-self: flex-end;
-      align-self: flex-end;
-      border-bottom: none;
-      border-right: none;
-      border-top-color: #fff;
+    -webkit-align-self: flex-end;
+    align-self: flex-end;
+    border-bottom: none;
+    border-right: none;
+    border-top-color: #fff;
   }
   :host.anchor-left .popup-tip {
-      -webkit-align-self: center;
-      align-self: center;
-      border-left: none;
-      border-right-color: #fff;
+    -webkit-align-self: center;
+    align-self: center;
+    border-left: none;
+    border-right-color: #fff;
   }
   :host.anchor-right .popup-tip {
-      -webkit-align-self: center;
-      align-self: center;
-      border-right: none;
-      border-left-color: #fff;
+    -webkit-align-self: center;
+    align-self: center;
+    border-right: none;
+    border-left-color: #fff;
   }
   :host .popup-close-button {
-      background-color: rgba(0,0,0,0.3);
-      font-size: 20px;
-      color: #ffffff;
-      position: absolute;
-      right: 0;
-      top: 0;
-      border: none;
-      border-radius: 0 3px 0 0;
-      cursor: pointer;
-      z-index: 99;
+    background-color: rgba(0, 0, 0, 0.3);
+    font-size: 20px;
+    color: #ffffff;
+    position: absolute;
+    right: 0;
+    top: 0;
+    border: none;
+    border-radius: 0 3px 0 0;
+    cursor: pointer;
+    z-index: 99;
   }
   :host .popup-close-button:hover {
-      background-color: rgba(0,0,0,0.5);
-      color: #dddddd;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #dddddd;
   }
   :host .popup-close-button:focus {
-      outline: none;
+    outline: none;
   }
   :host .popup-content {
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     pointer-events: auto;
     background-color: #ffffff;
     position: relative;
@@ -138,19 +138,33 @@ Popup.prototype = Object.create(Nanocomponent.prototype)
 
 Popup.prototype.createElement = function (props) {
   this.props = props = props || {}
-  const point = props.point || {x: 0, y: 0}
+  const point = props.point || { x: 0, y: 0 }
   const fProps = props.feature && props.feature.properties
-  const anchor = this.state.anchor = props.anchor || this._getPopupAnchor(point)
+  const anchor = (this.state.anchor =
+    props.anchor || this._getPopupAnchor(point))
   return html`
-    <div class='${popupClass} anchor-${anchor}' style='${getPopupTransform(anchor, point)}'>
-      <div class='popup-tip'></div>
-      <div class='popup-content'>
-        <button class='popup-close-button' type='button' aria-label='Close popup' onclick=${props.close}>×</button>
-        ${(fProps.image && image({url: fProps.image, onClick: props.onClick}))}
-        <div class='popup-text'>
+    <div
+      class="${popupClass} anchor-${anchor}"
+      style="${getPopupTransform(anchor, point)}"
+    >
+      <div class="popup-tip"></div>
+      <div class="popup-content">
+        <button
+          class="popup-close-button"
+          type="button"
+          aria-label="Close popup"
+          onclick=${props.close}
+        >
+          ×
+        </button>
+        ${fProps.image && image({ url: fProps.image, onClick: props.onClick })}
+        <div class="popup-text">
           <h2>${fProps.title}</h2>
           ${fProps.date && html`<h3>${format(fProps.date, 'Do MMM YYYY')}</h2>`}
-          ${fProps.description && html`<p>${fProps.description}</p>`}
+          ${fProps.description &&
+            html`
+              <p>${fProps.description}</p>
+            `}
         </div>
       </div>
     </div>
@@ -177,7 +191,7 @@ Popup.prototype.update = function (nextProps) {
 Popup.prototype._getPopupAnchor = function (pos) {
   const s = this.state
   let anchor
-  if (pos.y < s.height && (pos.y + s.height) < s.parentHeight) {
+  if (pos.y < s.height && pos.y + s.height < s.parentHeight) {
     anchor = ['top']
   } else if (pos.y > s.parentHeight - s.height) {
     anchor = ['bottom']
@@ -200,14 +214,14 @@ Popup.prototype._getPopupAnchor = function (pos) {
 }
 
 const anchorTranslate = {
-  'top': 'translate(-50%,0)',
+  top: 'translate(-50%,0)',
   'top-left': 'translate(0,0)',
   'top-right': 'translate(-100%,0)',
-  'bottom': 'translate(-50%,-100%)',
+  bottom: 'translate(-50%,-100%)',
   'bottom-left': 'translate(0,-100%)',
   'bottom-right': 'translate(-100%,-100%)',
-  'left': 'translate(0,-50%)',
-  'right': 'translate(-100%,-50%)'
+  left: 'translate(0,-50%)',
+  right: 'translate(-100%,-50%)'
 }
 
 function getPopupTransform (anchor, point) {

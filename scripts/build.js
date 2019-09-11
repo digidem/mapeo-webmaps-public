@@ -75,7 +75,13 @@ function renameStream (output) {
     function onend (cb) {
       stream.end()
       var parsed = path.parse(output)
-      var name = parsed.dir + '/' + parsed.name + '.' + hash.digest('hex').slice(0, 10) + parsed.ext
+      var name =
+        parsed.dir +
+        '/' +
+        parsed.name +
+        '.' +
+        hash.digest('hex').slice(0, 10) +
+        parsed.ext
       hashedNames[output] = name
       if (typeof this.emit === 'function') this.emit('name', name)
       fs.rename(tempName, outDir + name, cb)

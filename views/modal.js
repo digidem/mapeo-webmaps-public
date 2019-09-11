@@ -6,17 +6,25 @@ const omit = require('../lib/utils').omit
 
 const modalClass = css`
   @keyframes tdFadeBackgroundIn {
-    0% { background-color: rgba(0,0,0,0); }
-    100% { background-color: rgba(0,0,0,0.8); }
+    0% {
+      background-color: rgba(0, 0, 0, 0);
+    }
+    100% {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
   }
   @keyframes tdFadeBackgroundOut {
-    0% { background-color: rgba(0,0,0,0.8); }
-    100% { background-color: rgba(0,0,0,0); }
+    0% {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+    100% {
+      background-color: rgba(0, 0, 0, 0);
+    }
   }
   :host {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont,
-      "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
-      "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+      'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+      'Helvetica Neue', sans-serif;
   }
   :host(.open) {
     z-index: 9999;
@@ -30,7 +38,7 @@ const modalClass = css`
     max-height: 100%;
     overflow-y: scroll;
     animation-name: tdFadeBackgroundIn;
-    animation-duration: .3s;
+    animation-duration: 0.3s;
     animation-fill-mode: both;
   }
   :host(.closing) {
@@ -49,7 +57,9 @@ module.exports = ModalPortal
 
 function ModalPortal () {
   if (!(this instanceof ModalPortal)) return new ModalPortal()
-  this.portal = html`<div></div>`
+  this.portal = html`
+    <div></div>
+  `
   this.modal = new Modal()
   document.body.appendChild(this.portal)
 }
@@ -69,7 +79,7 @@ function Modal () {
   Nanocomponent.call(this)
 }
 
-const proto = Modal.prototype = Object.create(Nanocomponent.prototype)
+const proto = (Modal.prototype = Object.create(Nanocomponent.prototype))
 
 proto.createElement = function (props) {
   this.props = props
@@ -77,8 +87,14 @@ proto.createElement = function (props) {
   const open = props.open || this.state.closing
   const childProps = omit(props, ['render', 'open'])
   return html`
-    <div class='${modalClass} ${open ? 'open' : ''}' onclick=${this._onClick}>
-      ${open ? html`<div onkeydown=${this._onKeyDown} tabindex='-1'>${props.render(childProps)}</div>` : null}
+    <div class="${modalClass} ${open ? 'open' : ''}" onclick=${this._onClick}>
+      ${open
+        ? html`
+            <div onkeydown=${this._onKeyDown} tabindex="-1">
+              ${props.render(childProps)}
+            </div>
+          `
+        : null}
     </div>
   `
 }

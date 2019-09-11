@@ -1,12 +1,11 @@
-
 module.exports = ModalsModel
 
-const events = ModalsModel.events = {
+const events = (ModalsModel.events = {
   OPEN_FEATURE_MODAL: 'modals:open_feature',
   CLOSE_FEATURE_MODAL: 'modals:close_feature',
   OPEN_TERMS_MODAL: 'modals:open_terms',
   CLOSE_TERMS_MODAL: 'modals:close_terms'
-}
+})
 
 function ModalsModel () {
   return function modalsModel (state, emitter) {

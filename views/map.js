@@ -6,11 +6,18 @@ const assert = require('assert')
 
 const styles = require('../lib/map-styles')
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiZ21hY2xlbm5hbiIsImEiOiJSaWVtd2lRIn0.ASYMZE2HhwkAw4Vt7SavEg'
+mapboxgl.accessToken =
+  'pk.eyJ1IjoiZ21hY2xlbm5hbiIsImEiOiJSaWVtd2lRIn0.ASYMZE2HhwkAw4Vt7SavEg'
 
 const mapClass = css`
-  :host { position:absolute; height: 100%; width:100%; }
-  .mapboxgl-ctrl-group > button.mapboxgl-ctrl-compass { display: none; }
+  :host {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+  }
+  .mapboxgl-ctrl-group > button.mapboxgl-ctrl-compass {
+    display: none;
+  }
 `
 
 const FLY_TO_ZOOM = 12.5
@@ -40,7 +47,7 @@ MapView.prototype.createElement = function (props) {
 }
 
 MapView.prototype.load = function (el) {
-  const map = this.map = window.map = new mapboxgl.Map({
+  const map = (this.map = window.map = new mapboxgl.Map({
     container: el,
     style: this.props.mapStyle, // stylesheet location
     dragRotate: false
@@ -53,19 +60,28 @@ MapView.prototype.load = function (el) {
       console.log('bounds on load', this.props.features)
     }
 
-    map.on('mousemove', 'points', (e) => {
+    map.on('mousemove', 'points', e => {
       this.state.hoveredId = e.features[0].properties._id
       map.getCanvas().style.cursor = 'pointer'
-      map.setFilter('points-hover', ['in', '_id', e.features[0].properties._id, this.state.clickedId || ''])
+      map.setFilter('points-hover', [
+        'in',
+        '_id',
+        e.features[0].properties._id,
+        this.state.clickedId || ''
+      ])
     })
 
-    map.on('mouseleave', 'points', (e) => {
+    map.on('mouseleave', 'points', e => {
       this.state.hoveredId = null
       map.getCanvas().style.cursor = ''
-      map.setFilter('points-hover', ['in', '_id', this.state.clickedId !== null ? this.state.clickedId : ''])
+      map.setFilter('points-hover', [
+        'in',
+        '_id',
+        this.state.clickedId !== null ? this.state.clickedId : ''
+      ])
     })
 
-    map.on('click', 'points', (e) => {
+    map.on('click', 'points', e => {
       this.state.clickedId = e.features[0].properties._id
       map.setFilter('points-hover', ['in', '_id', this.state.clickedId])
       this.props.onClick(e.features[0], map)
@@ -78,8 +94,8 @@ MapView.prototype.load = function (el) {
       map.setFilter('points-hover', ['in', '_id', ''])
     })
 
-    map.on('move', (e) => this.props.onMove(e, map))
-  })
+    map.on('move', e => this.props.onMove(e, map))
+  }))
 
   map.addControl(new mapboxgl.NavigationControl(), 'top-left')
 }
@@ -94,9 +110,11 @@ MapView.prototype.update = function (nextProps) {
     const mapHeight = map.getContainer().offsetHeight
     const coords = zoomFeature.geometry.coordinates
     this.state.clickedId = zoomFeature.properties._id
-    this._ready(() => map.setFilter('points-hover', ['in', '_id', this.state.clickedId]))
+    this._ready(() =>
+      map.setFilter('points-hover', ['in', '_id', this.state.clickedId])
+    )
     map.flyTo({
-      center: [coords[0], coords[1] + mapHeight / 4 * DEG_PER_PIXEL],
+      center: [coords[0], coords[1] + (mapHeight / 4) * DEG_PER_PIXEL],
       zoom: FLY_TO_ZOOM
     })
     nextProps.onMove({}, map)
@@ -104,7 +122,14 @@ MapView.prototype.update = function (nextProps) {
 
   const hoveredId = this.state.hoveredId !== null ? this.state.hoveredId : ''
   if (popupFeature) {
-    this._ready(() => map.setFilter('points-hover', ['in', '_id', hoveredId, popupFeature.properties._id]))
+    this._ready(() =>
+      map.setFilter('points-hover', [
+        'in',
+        '_id',
+        hoveredId,
+        popupFeature.properties._id
+      ])
+    )
   } else {
     this.state.clickedId = null
     this._ready(() => map.setFilter('points-hover', ['in', '_id', hoveredId]))

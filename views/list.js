@@ -58,34 +58,49 @@ ListView.prototype = Object.create(Nanocomponent.prototype)
 
 ListView.prototype.createElement = function (props) {
   this.props = props
-  return html`<div class='${listClass}'>
-    <header>
-      ${props.title && html`<h1>${props.title}</h1>`}
-      ${props.description && html`<p>${props.description}</p>`}
-    </header>
-    <div>
-      ${props.features.sort(cmpDate).map(function (f) {
-        const fprops = f.properties
-        return html`
-          <button class='item' onclick=${props.onClick.bind(null, f.properties._id)}>
+  return html`
+    <div class="${listClass}">
+      <header>
+        ${props.title &&
+          html`
+            <h1>${props.title}</h1>
+          `}
+        ${props.description &&
+          html`
+            <p>${props.description}</p>
+          `}
+      </header>
+      <div>
+        ${props.features.sort(cmpDate).map(function (f) {
+          const fprops = f.properties
+          return html`
+          <button class='item' onclick=${props.onClick.bind(
+            null,
+            f.properties._id
+          )}>
             <div class='image'>
-              ${image({url: fprops.image, showMissing: true})}
+              ${image({ url: fprops.image, showMissing: true })}
             </div>
             <div class='popup-inner'>
               <h2>${fprops.title}</h1>
-              ${fprops.date && html`<h3>${format(fprops.date, 'Do MMM YYYY')}</h2>`}
+              ${fprops.date &&
+                html`<h3>${format(fprops.date, 'Do MMM YYYY')}</h2>`}
             </div>
           </button>
         `
-      })}
+        })}
+      </div>
     </div>
-  </div>`
+  `
 }
 
 // Implement conditional rendering
 ListView.prototype.update = function (nextProps) {
   var shouldUpdate = false
-  if (nextProps.features !== this.props.features || nextProps.title !== this.props.title) {
+  if (
+    nextProps.features !== this.props.features ||
+    nextProps.title !== this.props.title
+  ) {
     shouldUpdate = true
   }
   this.props = nextProps

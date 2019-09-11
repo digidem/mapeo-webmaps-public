@@ -35,7 +35,12 @@ const MISSING_URL = '/missing.png'
 function image (props) {
   const ratio = props.ratio || '4x3'
   if (!props.url && !props.showMissing) return null
-  return html`<div class='${imageClass} ratio-${ratio}' onclick=${props.onClick}>
-    <div style='background-image: url(${props.url || MISSING_URL})' class='${props.url ? '' : 'missing'}'></div>
-  </div>`
+  return html`
+    <div class="${imageClass} ratio-${ratio}" onclick=${props.onClick}>
+      <div
+        style="background-image: url(${props.url || MISSING_URL})"
+        class="${props.url ? '' : 'missing'}"
+      ></div>
+    </div>
+  `
 }

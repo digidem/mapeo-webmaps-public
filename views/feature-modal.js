@@ -5,17 +5,26 @@ const Nanocomponent = require('nanocomponent')
 
 const modalClass = css`
   @keyframes tdFadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
   @keyframes tdFadeOut {
-    0% { opacity: 1; }
-    100% { opacity: 0; }
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
   }
   :host {
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 45px, rgba(0, 0, 0, 0.22) 0px 10px 18px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 45px,
+      rgba(0, 0, 0, 0.22) 0px 10px 18px;
     animation-name: tdFadeIn;
-    animation-duration: .3s;
+    animation-duration: 0.3s;
     animation-fill-mode: both;
   }
   :host img {
@@ -43,7 +52,7 @@ const modalClass = css`
     }
   }
   :host button {
-    background-color: rgba(0,0,0,0.3);
+    background-color: rgba(0, 0, 0, 0.3);
     font-size: 30px;
     color: #ffffff;
     position: absolute;
@@ -55,14 +64,14 @@ const modalClass = css`
     z-index: 99;
   }
   :host button:hover {
-      background-color: rgba(0,0,0,0.5);
-      color: #dddddd;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #dddddd;
   }
   :host button:focus {
-      outline: none;
+    outline: none;
   }
   :host .text {
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     max-width: 400px;
     width: 100%;
     padding: 1em;
@@ -77,7 +86,7 @@ const modalClass = css`
   }
   :host .text h3 {
     color: #cccccc;
-    margin: 0
+    margin: 0;
   }
   :host .text p {
     line-height: 1.5;
@@ -96,21 +105,40 @@ function FeatureModal () {
   Nanocomponent.call(this)
 }
 
-const proto = FeatureModal.prototype = Object.create(Nanocomponent.prototype)
+const proto = (FeatureModal.prototype = Object.create(Nanocomponent.prototype))
 
 proto.createElement = function (props) {
   this.props = props
-  if (!this.dim) return html`<div></div>`
+  if (!this.dim)
+    return html`
+      <div></div>
+    `
   const fProps = props.feature ? props.feature.properties : {}
-  return html`<div class='${modalClass}'>
-    <button class='close' type='button' aria-label='Close popup' onclick=${props.close}>×</button>
-    <img src='${fProps.image}' style='background-image: url(${fProps.image}); width: ${this.dim[0]}px; height: ${this.dim[1]}px;'>
-    <div class='text'>
-      <h2>${fProps.title}</h2>
-      ${fProps.date && html`<h3>${format(fProps.date, 'Do MMM YYYY')}</h2>`}
-      ${fProps.description && html`<p>${fProps.description}</p>`}
+  return html`
+    <div class="${modalClass}">
+      <button
+        class="close"
+        type="button"
+        aria-label="Close popup"
+        onclick=${props.close}
+      >
+        ×
+      </button>
+      <img
+        src="${fProps.image}"
+        style="background-image: url(${fProps.image}); width: ${this
+          .dim[0]}px; height: ${this.dim[1]}px;"
+      />
+      <div class="text">
+        <h2>${fProps.title}</h2>
+        ${fProps.date && html`<h3>${format(fProps.date, 'Do MMM YYYY')}</h2>`}
+        ${fProps.description &&
+          html`
+            <p>${fProps.description}</p>
+          `}
+      </div>
     </div>
-  </div>`
+  `
 }
 
 proto.update = function (nextProps) {
@@ -121,7 +149,10 @@ proto.load = function () {
   window.addEventListener('resize', this._resizeImage)
   this.preview = new window.Image()
   this.preview.onload = this._onPreviewLoad.bind(this)
-  this.preview.src = this.props.feature && this.props.feature.properties && this.props.feature.properties.image
+  this.preview.src =
+    this.props.feature &&
+    this.props.feature.properties &&
+    this.props.feature.properties.image
 }
 
 proto.unload = function () {
