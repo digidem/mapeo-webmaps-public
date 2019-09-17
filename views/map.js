@@ -79,6 +79,16 @@ MapView.prototype.createElement = function (props) {
   `
 }
 
+MapView.prototype.unload = function () {
+  this.map.remove()
+  this.map = null
+  this.state = {
+    features: [],
+    hoveredId: null,
+    clickedId: null
+  }
+}
+
 MapView.prototype.load = function (el) {
   const map = (this.map = window.map = new mapboxgl.Map({
     container: el,
