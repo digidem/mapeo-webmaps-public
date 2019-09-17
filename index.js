@@ -15,8 +15,10 @@ app.use(require('./models/map')())
 app.use(require('./models/features')())
 app.use(require('./models/modals')())
 app.use(require('./models/info')())
+app.use(require('./models/maps')())
 
 app.route('/groups/:userId/maps/:mapId', require('./views/main')(app))
+app.route('/groups/:userId/maps', require('./views/all-maps'))
 app.route('/*', require('./views/404'))
 
 module.exports = app.mount('#root')
