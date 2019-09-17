@@ -47,14 +47,8 @@ function termsModal (props) {
   return html`
     <div class="${modalClass}">
       <h2>Terms and Limitations</h2>
-      <p>
-        This map platform displays informaton collected by the SRDC local
-        community mointors from 2013–16. It is meant to show some examples and
-        does not contain all the reports gathered by the monitoring team, which
-        number over 100 sites. The site is work in progress and is still under a
-        process of refinement.
-      </p>
-      <div class="actions"><button onclick=${props.close}>CLOSE</button></div>
+      <p>${props.terms}</p>
+      <div class="actions"><button onclick="${props.close}">CLOSE</button></div>
     </div>
   `
 }

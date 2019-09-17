@@ -67,7 +67,7 @@ ListView.prototype.createElement = function (props) {
           `}
         ${props.description &&
           html`
-            <p>${props.description}</p>
+            <p>${props.description} ${props.terms ? html`<a href='#' onclick=${props.onTermsClick}>Terms & Limitations</a>.` : ''}</p>
           `}
       </header>
       <div>

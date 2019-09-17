@@ -129,11 +129,15 @@ function MainView (app) {
         <div class="left-column">
           ${
   listView({
-    onTermsClick: () => emit(modalsEvents.OPEN_TERMS_MODAL),
+    onTermsClick: e => {
+      e.preventDefault()
+      emit(modalsEvents.OPEN_TERMS_MODAL)
+    },
     features: state.features,
     onClick: id => emit(mapEvents.ZOOM_TO, id),
     title: state.info && state.info.title,
-    description: state.info && state.info.description
+    description: state.info && state.info.description,
+    terms: state.info && state.info.terms
   })
 }
         </div>
@@ -202,6 +206,7 @@ function MainView (app) {
     close: () => emit(modalsEvents.CLOSE_TERMS_MODAL),
     render: () =>
       termsModal({
+        terms: state.info && state.info.terms,
         close: () => emit(modalsEvents.CLOSE_TERMS_MODAL)
       })
   })

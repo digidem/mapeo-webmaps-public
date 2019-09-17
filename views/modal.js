@@ -145,7 +145,9 @@ proto._onClosed = function (e) {
 
 proto._onClick = function (e) {
   if (e.target !== this.element) return
+  this.props.open = false
   this.props.close()
+  this.rerender()
 }
 
 proto._onKeyDown = function (e) {
