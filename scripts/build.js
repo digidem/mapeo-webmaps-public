@@ -12,9 +12,12 @@ const mkdirp = require('mkdirp')
 
 const hashedNames = {}
 const outDir = 'dist'
+const tmpDir = 'tmp'
 
 rimraf.sync(outDir)
+rimraf.sync(tmpDir)
 mkdirp.sync(outDir)
+mkdirp.sync(tmpDir)
 
 browserify('index.js', { debug: true })
   .transform('nanohtml')
@@ -63,7 +66,7 @@ function compress (filepath) {
 
 function renameStream (output) {
   return function () {
-    const tempName = temp.path()
+    const tempName = temp.path({ dir: tmpDir })
     var stream = fs.createWriteStream(tempName)
     var hash = crypto.createHash('sha256')
     return to(onwrite, onend)
