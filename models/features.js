@@ -20,7 +20,9 @@ function FeaturesModel () {
       emitter.emit(state.events.RENDER)
       state.userId = userId
       state.mapId = mapId
-      const url = `${API_BASE}groups/${userId}/maps/${mapId}/observations`
+      // TODO: This will not return more than 300 observations. To get more we
+      // need to make repeat requests using the returned token for next page
+      const url = `${API_BASE}groups/${userId}/maps/${mapId}/observations?pageSize=300`
       window
         .fetch(url)
         .then(response => {
