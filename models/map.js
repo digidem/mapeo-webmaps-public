@@ -35,12 +35,6 @@ function MapModel () {
 
     emitter.on(events.ZOOM_TO, function (id) {
       const match = state.features.filter(f => id === f.properties._id)
-      console.log(match)
-      //If there are no-coordinates to zoom to, does nothing
-      if(!match[0] || (typeof match[0].geometry.coordinates === 'boolean' || match[0].geometry.coordinates[0]===null || match[0].geometry.coordinates[1]===null))
-      {
-        return
-      }
       state.zoomFeature = match.length ? match[0] : null
       if (
         state.popupFeature === state.zoomFeature &&

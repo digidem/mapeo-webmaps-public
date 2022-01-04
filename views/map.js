@@ -278,8 +278,11 @@ function featureCollection (features) {
 function getBounds (features = []) {
   const extent = [[-180, -85], [180, 85]]
   //Filters all features without a coordinate
-  const filteredFeatures = features.filter(feat => (typeof feat.geometry.coordinates !== 'boolean' && feat.geometry.coordinates[0] !== null && feat.geometry.coordinates[1] !== null))
-  console.log(filteredFeatures)
+  const filteredFeatures = features.filter(feat => (
+    Array.isArray(feat.geometry.coordinates)
+    && feat.geometry.coordinates[0] !== null 
+    && feat.geometry.coordinates[1] !== null))
+    
   for (const { geometry: { coordinates: [lon, lat] = [] } = {} } of filteredFeatures) {
     if (lon == null || lat == null) continue
     if (extent[0][0] < lon) extent[0][0] = lon
