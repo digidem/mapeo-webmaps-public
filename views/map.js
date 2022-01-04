@@ -98,6 +98,8 @@ MapView.prototype.load = function (el) {
     this.state.loaded = true
     this._setupLayers()
 
+    
+
     if (this.props.features && this.props.features.length) {
       this.fitBounds(this.props.features)
       this._hasDoneInitialZoom = true
@@ -275,7 +277,10 @@ function featureCollection (features) {
 
 function getBounds (features = []) {
   const extent = [[-180, -85], [180, 85]]
-  for (const { geometry: { coordinates: [lon, lat] = [] } = {} } of features) {
+  //Filters all features without a coordinate
+  const filteredFeatures = features.filter(feat => (typeof feat.geometry.coordinates !== 'boolean' && feat.geometry.coordinates[0] !== null && feat.geometry.coordinates[1] !== null))
+  console.log(filteredFeatures)
+  for (const { geometry: { coordinates: [lon, lat] = [] } = {} } of filteredFeatures) {
     if (lon == null || lat == null) continue
     if (extent[0][0] < lon) extent[0][0] = lon
     if (extent[0][1] < lat) extent[0][1] = lat
