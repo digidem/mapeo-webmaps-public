@@ -1,7 +1,7 @@
 {
-  "name": "wapichan-map",
+  "name": "mapeo-webmaps-public",
   "version": "1.0.0",
-  "description": "Map of Wapichan monitoring points",
+  "description": "Publicly shared webmaps from Mapeo",
   "main": "index.js",
   "dependencies": {
     "choo": "^7.0.0",

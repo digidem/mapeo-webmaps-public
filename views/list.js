@@ -83,7 +83,7 @@ ListView.prototype.createElement = function (props) {
           <button class='item' onclick=${hasCoords ? props.onClick.bind(
             null,
             f.properties._id
-          ) :"return"}>
+          ) :null}>
             <div class='image'>
               ${image({ url: fprops.image, showMissing: true })}
             </div>
