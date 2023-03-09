@@ -7,9 +7,9 @@ const events = (FeaturesModel.events = {
 })
 
 const API_BASE =
-  'https://firestore.googleapis.com/v1beta1/projects/mapeo-webmaps/databases/(default)/documents/'
+  'https://firestore.googleapis.com/v1beta1/projects/mapeo-webmaps-staging/databases/(default)/documents/'
 const IMAGE_BASE =
-  'https://firebasestorage.googleapis.com/v0/b/mapeo-webmaps.appspot.com/o/'
+  'https://firebasestorage.googleapis.com/v0/b/mapeo-webmaps-staging.appspot.com/o/'
 
 function FeaturesModel () {
   return function featuresModel (state, emitter) {
