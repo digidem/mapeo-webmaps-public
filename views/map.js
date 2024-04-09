@@ -7,7 +7,7 @@ const assert = require('assert')
 const styles = require('../lib/map-styles')
 
 mapboxgl.accessToken =
-  'pk.eyJ1IjoiZ21hY2xlbm5hbiIsImEiOiJSaWVtd2lRIn0.ASYMZE2HhwkAw4Vt7SavEg'
+  'pk.eyJ1IjoiZGlnaWRlbSIsImEiOiJjbHVzbHNveTkwbmdtMmpvNTJhbDFrajB2In0.giNVbUpcu54GM5ai7gBhMA'
 
 const mapClass = css`
   :host {
