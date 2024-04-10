@@ -6,18 +6,10 @@ module.exports = {
   skipWaiting: true,
   runtimeCaching: [
     {
-      urlPattern: /assets/,
+      urlPattern: /\/assets\/|\/groups\//,
       handler: 'StaleWhileRevalidate',
       options: {
         cacheName: 'static',
-        cacheableResponse: { statuses: [0, 200] }
-      }
-    },
-    {
-      urlPattern: /\/groups/,
-      handler: 'NetworkFirst',
-      options: {
-        cacheName: 'groups',
         cacheableResponse: { statuses: [0, 200] }
       }
     },
@@ -26,19 +18,30 @@ module.exports = {
         /https:\/\/firestore.googleapis.com|https:\/\/firebasestorage.googleapis.com/,
       handler: 'StaleWhileRevalidate',
       options: {
-        cacheName: 'dynamic',
+        cacheName: 'firebase-docs',
+        cacheableResponse: { statuses: [0, 200] }
+      }
+    },
+    {
+      // You can use a RegExp as the pattern:
+      urlPattern: /https:\/\/api\.mapbox\.com/,
+      handler: 'StaleWhileRevalidate',
+      // Any options provided will be used when
+      // creating the caching strategy.
+      options: {
+        cacheName: 'map-resources',
         cacheableResponse: { statuses: [0, 200] }
       }
     },
     {
       // You can use a RegExp as the pattern:
       urlPattern:
-        /https:\/\/api\.mapbox\.com|https:\/\/[abcd]\.tiles\.mapbox\.com|https:\/\/ecn\.t\d\.tiles\.virtualearth\.net/,
+        /https:\/\/[abcd]\.tiles\.mapbox\.com|https:\/\/ecn\.t\d\.tiles\.virtualearth\.net/,
       handler: 'StaleWhileRevalidate',
       // Any options provided will be used when
       // creating the caching strategy.
       options: {
-        cacheName: 'map',
+        cacheName: 'map-tiles',
         cacheableResponse: { statuses: [0, 200] }
       }
     }
