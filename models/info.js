@@ -31,11 +31,22 @@ function InfoModel () {
           return response.json()
         })
         .then(_data => {
+          const { fields } = parseFirestore(_data)
+          if (fields.mapStyle) {
+            const styleUrl = new URL(fields.mapStyle)
+            const accessToken = styleUrl.searchParams.get('access_token')
+            if (accessToken && !fields.accessToken) {
+              fields.accessToken = accessToken
+            }
+            styleUrl.searchParams.delete('access_token')
+            fields.mapStyle = styleUrl.toString()
+          }
           state.info = {
             ...state.info,
-            ...parseFirestore(_data).fields,
+            ...fields,
             loaded: true
           }
+          console.log(state.info)
           state.notFound = false
           emitter.emit(state.events.RENDER)
         })
