@@ -14,6 +14,14 @@ module.exports = {
       }
     },
     {
+      urlPattern: /\/groups/,
+      handler: 'NetworkFirst',
+      options: {
+        cacheName: 'groups',
+        cacheableResponse: { statuses: [0, 200] }
+      }
+    },
+    {
       urlPattern:
         /https:\/\/firestore.googleapis.com|https:\/\/firebasestorage.googleapis.com/,
       handler: 'StaleWhileRevalidate',
