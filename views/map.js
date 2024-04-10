@@ -58,12 +58,13 @@ class FitBoundsControl {
 
 module.exports = MapView
 
-function MapView () {
-  if (!(this instanceof MapView)) return new MapView()
+function MapView ({ accessToken }) {
+  if (!(this instanceof MapView)) return new MapView({ accessToken })
   this.state = {
     features: [],
     hoveredId: null,
-    clickedId: null
+    clickedId: null,
+    accessToken
   }
   this.render = this.render.bind(this)
   Nanocomponent.call(this)
@@ -74,9 +75,7 @@ MapView.prototype = Object.create(Nanocomponent.prototype)
 MapView.prototype.createElement = function (props) {
   // this.emit = emit
   this.props = props
-  return html`
-    <div class="${mapClass}"></div>
-  `
+  return html` <div class="${mapClass}"></div> `
 }
 
 MapView.prototype.unload = function () {
@@ -90,57 +89,59 @@ MapView.prototype.unload = function () {
 }
 
 MapView.prototype.load = function (el) {
-  const map = (this.map = window.map = new mapboxgl.Map({
-    container: el,
-    style: this.props.mapStyle, // stylesheet location
-    dragRotate: false
-  }).on('load', () => {
-    this.state.loaded = true
-    this._setupLayers()
+  const map =
+    (this.map =
+    window.map =
+      new mapboxgl.Map({
+        container: el,
+        style: this.props.mapStyle, // stylesheet location
+        accessToken: this.state.accessToken,
+        dragRotate: false
+      }).on('load', () => {
+        this.state.loaded = true
+        this._setupLayers()
 
-    
+        if (this.props.features && this.props.features.length) {
+          this.fitBounds(this.props.features)
+          this._hasDoneInitialZoom = true
+        }
 
-    if (this.props.features && this.props.features.length) {
-      this.fitBounds(this.props.features)
-      this._hasDoneInitialZoom = true
-    }
+        map.on('mousemove', 'points', e => {
+          this.state.hoveredId = e.features[0].properties._id
+          map.getCanvas().style.cursor = 'pointer'
+          map.setFilter('points-hover', [
+            'in',
+            '_id',
+            e.features[0].properties._id,
+            this.state.clickedId || ''
+          ])
+        })
 
-    map.on('mousemove', 'points', e => {
-      this.state.hoveredId = e.features[0].properties._id
-      map.getCanvas().style.cursor = 'pointer'
-      map.setFilter('points-hover', [
-        'in',
-        '_id',
-        e.features[0].properties._id,
-        this.state.clickedId || ''
-      ])
-    })
+        map.on('mouseleave', 'points', e => {
+          this.state.hoveredId = null
+          map.getCanvas().style.cursor = ''
+          map.setFilter('points-hover', [
+            'in',
+            '_id',
+            this.state.clickedId !== null ? this.state.clickedId : ''
+          ])
+        })
 
-    map.on('mouseleave', 'points', e => {
-      this.state.hoveredId = null
-      map.getCanvas().style.cursor = ''
-      map.setFilter('points-hover', [
-        'in',
-        '_id',
-        this.state.clickedId !== null ? this.state.clickedId : ''
-      ])
-    })
+        map.on('click', 'points', e => {
+          this.state.clickedId = e.features[0].properties._id
+          map.setFilter('points-hover', ['in', '_id', this.state.clickedId])
+          this.props.onClick(e.features[0], map)
+        })
 
-    map.on('click', 'points', e => {
-      this.state.clickedId = e.features[0].properties._id
-      map.setFilter('points-hover', ['in', '_id', this.state.clickedId])
-      this.props.onClick(e.features[0], map)
-    })
+        map.on('click', () => {
+          if (this.state.hoveredId !== null) return
+          this.props.onClick()
+          this.state.clickedId = null
+          map.setFilter('points-hover', ['in', '_id', ''])
+        })
 
-    map.on('click', () => {
-      if (this.state.hoveredId !== null) return
-      this.props.onClick()
-      this.state.clickedId = null
-      map.setFilter('points-hover', ['in', '_id', ''])
-    })
-
-    map.on('move', e => this.props.onMove(e, map))
-  }))
+        map.on('move', e => this.props.onMove(e, map))
+      }))
 
   map.addControl(new mapboxgl.NavigationControl(), 'top-left')
   map.addControl(new mapboxgl.ScaleControl({ maxWidth: 80 }))
@@ -197,8 +198,10 @@ MapView.prototype.update = function (nextProps) {
     }
   }
 
-  if (nextProps.mapStyle !== this.props.mapStyle) {
-    this._setMapStyle(nextProps.mapStyle + '?fresh=true')
+  if (nextProps.mapStyle && nextProps.mapStyle !== this.props.mapStyle) {
+    const styleUrl = new URL(nextProps.mapStyle)
+    styleUrl.searchParams.set('fresh', 'true')
+    this._setMapStyle(styleUrl.toString())
   }
 
   this.props = nextProps
@@ -276,14 +279,21 @@ function featureCollection (features) {
 }
 
 function getBounds (features = []) {
-  const extent = [[-180, -85], [180, 85]]
+  const extent = [
+    [-180, -85],
+    [180, 85]
+  ]
   //Filters all features without a coordinate
-  const filteredFeatures = features.filter(feat => (
-    Array.isArray(feat.geometry.coordinates)
-    && feat.geometry.coordinates[0] !== null 
-    && feat.geometry.coordinates[1] !== null))
-    
-  for (const { geometry: { coordinates: [lon, lat] = [] } = {} } of filteredFeatures) {
+  const filteredFeatures = features.filter(
+    feat =>
+      Array.isArray(feat.geometry.coordinates) &&
+      feat.geometry.coordinates[0] !== null &&
+      feat.geometry.coordinates[1] !== null
+  )
+
+  for (const {
+    geometry: { coordinates: [lon, lat] = [] } = {}
+  } of filteredFeatures) {
     if (lon == null || lat == null) continue
     if (extent[0][0] < lon) extent[0][0] = lon
     if (extent[0][1] < lat) extent[0][1] = lat

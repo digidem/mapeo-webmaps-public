@@ -17,7 +17,8 @@ function InfoModel () {
 
     emitter.on(events.LOAD, function (userId, mapId) {
       state.info = {
-        mapStyle: 'mapbox://styles/mapbox/outdoors-v11'
+        mapStyle: 'mapbox://styles/mapbox/outdoors-v11',
+        loaded: false
       }
       emitter.emit(state.events.RENDER)
       state.userId = userId
@@ -32,7 +33,8 @@ function InfoModel () {
         .then(_data => {
           state.info = {
             ...state.info,
-            ...parseFirestore(_data).fields
+            ...parseFirestore(_data).fields,
+            loaded: true
           }
           state.notFound = false
           emitter.emit(state.events.RENDER)

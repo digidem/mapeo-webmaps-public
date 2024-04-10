@@ -93,6 +93,7 @@ const loading = () =>
   `
 
 function MainView (app) {
+  let MapView
   let mapView
   const listView = new ListView().render
   const popup = new Popup().render
@@ -101,14 +102,13 @@ function MainView (app) {
   const featureModal = new FeatureModal()
 
   if (process.env.NODE_ENV === 'production') {
-    splitRequire('./map', function (err, MapView) {
+    splitRequire('./map', function (err, _MapView) {
       if (err) return console.error(err)
-      mapView = new MapView()
+      MapView = _MapView
       app.emitter.emit('render')
     })
   } else {
-    const MapView = require('./map')
-    mapView = new MapView()
+    MapView = require('./map')
   }
 
   return function mainView (state, emit) {
@@ -123,94 +123,88 @@ function MainView (app) {
       emit(infoEvents.LOAD, state.params.userId, state.params.mapId)
     }
 
+    if (MapView && !mapView && state.info.loaded) {
+      mapView = new MapView({ accessToken: state.info.accessToken })
+    }
+
     if (state.notFound) return notFound()
     return html`
       <div class="${mainClass}">
         <div class="left-column">
-          ${
-  listView({
-    onTermsClick: e => {
-      e.preventDefault()
-      emit(modalsEvents.OPEN_TERMS_MODAL)
-    },
-    features: state.features,
-    onClick: id => emit(mapEvents.ZOOM_TO, id),
-    title: state.info && state.info.title,
-    description: state.info && state.info.description,
-    terms: state.info && state.info.terms
-  })
-}
+          ${listView({
+            onTermsClick: e => {
+              e.preventDefault()
+              emit(modalsEvents.OPEN_TERMS_MODAL)
+            },
+            features: state.features,
+            onClick: id => emit(mapEvents.ZOOM_TO, id),
+            title: state.info && state.info.title,
+            description: state.info && state.info.description,
+            terms: state.info && state.info.terms
+          })}
         </div>
         <div class="right-column">
-          ${
-  mapView
-    ? mapView.render({
-      features: state.features,
-      zoomFeature: state.zoomFeature,
-      popupFeature: state.popupFeature,
-      mapStyle: state.info.mapStyle,
-      onClick: (feature, map) => {
-        if (feature) {
-          emit(mapEvents.SHOW_POPUP, { feature: feature, map: map })
-          return
-        }
-        if (state.zoomFeature) {
-          emit(mapEvents.CANCEL_ZOOM)
-        }
-        emit(mapEvents.CLOSE_POPUP)
-      },
-      onMove: (e, map) => {
-        if (state.popupFeature) {
-          emit(mapEvents.MOVE_POPUP, { event: e, map: map })
-        }
-        if (e.originalEvent && state.zoomFeature) {
-          emit(mapEvents.CANCEL_ZOOM)
-        }
-      }
-    })
-    : loading()
-}
-          ${
-  state.popupFeature &&
-              popup({
-                feature: state.popupFeature,
-                point: state.popupPoint,
-                anchor: state.zoomFeature && 'bottom',
-                onClick: e =>
-                  emit(modalsEvents.OPEN_FEATURE_MODAL, {
-                    feature: state.popupFeature,
-                    event: e
-                  }),
-                close: () => emit(mapEvents.CLOSE_POPUP)
+          ${mapView
+            ? mapView.render({
+                features: state.features,
+                zoomFeature: state.zoomFeature,
+                popupFeature: state.popupFeature,
+                mapStyle: state.info.mapStyle,
+                onClick: (feature, map) => {
+                  if (feature) {
+                    emit(mapEvents.SHOW_POPUP, { feature: feature, map: map })
+                    return
+                  }
+                  if (state.zoomFeature) {
+                    emit(mapEvents.CANCEL_ZOOM)
+                  }
+                  emit(mapEvents.CLOSE_POPUP)
+                },
+                onMove: (e, map) => {
+                  if (state.popupFeature) {
+                    emit(mapEvents.MOVE_POPUP, { event: e, map: map })
+                  }
+                  if (e.originalEvent && state.zoomFeature) {
+                    emit(mapEvents.CANCEL_ZOOM)
+                  }
+                }
               })
-}
+            : loading()}
+          ${state.popupFeature &&
+            popup({
+              feature: state.popupFeature,
+              point: state.popupPoint,
+              anchor: state.zoomFeature && 'bottom',
+              onClick: e =>
+                emit(modalsEvents.OPEN_FEATURE_MODAL, {
+                  feature: state.popupFeature,
+                  event: e
+                }),
+              close: () => emit(mapEvents.CLOSE_POPUP)
+            })}
         </div>
-        ${
-  featureModalContainer.render({
-    open: state.featureModalOpen,
-    close: () => {
-      emit(modalsEvents.CLOSE_FEATURE_MODAL)
-    },
-    render: () =>
-      featureModal.render({
-        feature: state.featureModal,
-        close: () => {
-          emit(modalsEvents.CLOSE_FEATURE_MODAL)
-        }
-      })
-  })
-}
-        ${
-  termsModalContainer.render({
-    open: state.termsModalOpen,
-    close: () => emit(modalsEvents.CLOSE_TERMS_MODAL),
-    render: () =>
-      termsModal({
-        terms: state.info && state.info.terms,
-        close: () => emit(modalsEvents.CLOSE_TERMS_MODAL)
-      })
-  })
-}
+        ${featureModalContainer.render({
+          open: state.featureModalOpen,
+          close: () => {
+            emit(modalsEvents.CLOSE_FEATURE_MODAL)
+          },
+          render: () =>
+            featureModal.render({
+              feature: state.featureModal,
+              close: () => {
+                emit(modalsEvents.CLOSE_FEATURE_MODAL)
+              }
+            })
+        })}
+        ${termsModalContainer.render({
+          open: state.termsModalOpen,
+          close: () => emit(modalsEvents.CLOSE_TERMS_MODAL),
+          render: () =>
+            termsModal({
+              terms: state.info && state.info.terms,
+              close: () => emit(modalsEvents.CLOSE_TERMS_MODAL)
+            })
+        })}
       </div>
     `
   }

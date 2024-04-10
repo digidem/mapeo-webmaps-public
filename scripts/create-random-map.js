@@ -44,7 +44,9 @@ const seed = Buffer.from(output, 'utf8').toString('hex')
     // Download one at a time to avoid 503 from picsum
     for (var i = 0; i < 20; i++) {
       const imageFilename = `photo${i}.jpg`
-      points[i].properties.image = points[i + 20].properties.image = imageFilename
+      points[i].properties.image = points[
+        i + 20
+      ].properties.image = imageFilename
       await pipeline(
         got.stream(`https://picsum.photos/seed/${seed}${i}/1200/800`),
         fs.createWriteStream(path.join(output, `images/${imageFilename}`))
@@ -54,8 +56,14 @@ const seed = Buffer.from(output, 'utf8').toString('hex')
   } catch (err) {
     console.error(err)
   }
-  fs.writeFileSync(path.join(output, 'points.json'), JSON.stringify(featureCollection(points), null, 2))
-  fs.writeFileSync(path.join(output, 'metadata.json'), JSON.stringify(metadata, null, 2))
+  fs.writeFileSync(
+    path.join(output, 'points.json'),
+    JSON.stringify(featureCollection(points), null, 2)
+  )
+  fs.writeFileSync(
+    path.join(output, 'metadata.json'),
+    JSON.stringify(metadata, null, 2)
+  )
 
   const ws = fs.createWriteStream(output + '.mapeomap')
   const archive = archiver('zip', {

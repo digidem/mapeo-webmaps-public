@@ -110,14 +110,12 @@ module.exports = function AllMaps (state, emit) {
   const baseUrl = `/groups/${state.userId}/maps/`
   return html`
     <div class="${mapsClass}">
-      ${
-  state.maps.map(
-    map => html`
-            <h2><a href="${baseUrl}${map.id}">${map.title}</a></h2>
-            <p>${map.description}</p>
-          `
-  )
-}
+      ${state.maps.map(
+        map => html`
+          <h2><a href="${baseUrl}${map.id}">${map.title}</a></h2>
+          <p>${map.description}</p>
+        `
+      )}
     </div>
   `
 }

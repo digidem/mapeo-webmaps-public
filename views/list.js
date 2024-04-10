@@ -67,23 +67,34 @@ ListView.prototype.createElement = function (props) {
           `}
         ${props.description &&
           html`
-            <p>${props.description} ${props.terms ? html`<a href='#' onclick=${props.onTermsClick}>Terms & Limitations</a>.` : ''}</p>
+            <p>
+              ${props.description}
+              ${props.terms
+                ? html`
+                    <a href="#" onclick=${props.onTermsClick}
+                      >Terms & Limitations</a
+                    >.
+                  `
+                : ''}
+            </p>
           `}
       </header>
       <div>
         ${props.features.sort(cmpDate).map(function (f) {
           const fprops = f.properties
-          const match = props.features.filter(feat => f.properties._id === feat.properties._id)
+          const match = props.features.filter(
+            feat => f.properties._id === feat.properties._id
+          )
           //If there are no-coordinates to zoom to, does nothing
-          const hasCoords =  (Array.isArray(match[0].geometry.coordinates)
-            && match[0].geometry.coordinates[0] != undefined 
-            && match[0].geometry.coordinates[1] != undefined)
-         
+          const hasCoords =
+            Array.isArray(match[0].geometry.coordinates) &&
+            match[0].geometry.coordinates[0] != undefined &&
+            match[0].geometry.coordinates[1] != undefined
+
           return html`
-          <button class='item' onclick=${hasCoords ? props.onClick.bind(
-            null,
-            f.properties._id
-          ) :null}>
+          <button class='item' onclick=${
+            hasCoords ? props.onClick.bind(null, f.properties._id) : null
+          }>
             <div class='image'>
               ${image({ url: fprops.image, showMissing: true })}
             </div>
