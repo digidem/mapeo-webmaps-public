@@ -30,7 +30,10 @@ function InfoModel () {
           return response.json()
         })
         .then(_data => {
-          state.info = parseFirestore(_data).fields || {}
+          state.info = {
+            ...state.info,
+            ...parseFirestore(_data).fields
+          }
           state.notFound = false
           emitter.emit(state.events.RENDER)
         })
