@@ -7,7 +7,7 @@ const events = (mapsModel.events = {
 })
 
 const API_BASE =
-  'https://firestore.googleapis.com/v1beta1/projects/mapeo-webmaps/databases/(default)/documents/'
+  'https://firestore.googleapis.com/v1beta1/projects/mapeo-webmaps-staging/databases/(default)/documents/'
 
 function mapsModel () {
   return function featuresModel (state, emitter) {
