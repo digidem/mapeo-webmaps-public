@@ -42,14 +42,14 @@
     "uglify-js": "^3.6.0",
     "uglifyify": "^5.0.2",
     "unassertify": "^2.1.1",
-    "workbox-cli": "^2.0.1"
+    "workbox-cli": "^7.0.0"
   },
   "scripts": {
     "start": "budo index.js:bundle.js --live -P -d static",
     "lint": "standard",
     "test": "yarn lint && yarn test-deps",
     "test-deps": "dependency-check . && dependency-check . --extra --no-dev -i normalize.css",
-    "build": "node scripts/build.js && workbox generate:sw",
+    "build": "node scripts/build.js && workbox generateSW workbox-config.js",
     "deploy": "aws s3 sync dist s3://mapeo-webmaps/public/",
     "format": "prettier-standard '**/*'"
   },
