@@ -32,6 +32,7 @@ function InfoModel () {
         })
         .then(_data => {
           const { fields } = parseFirestore(_data)
+          // If the mapStyle has an access token as a search param, use it as the accessToken
           if (fields.mapStyle) {
             const styleUrl = new URL(fields.mapStyle)
             const accessToken = styleUrl.searchParams.get('access_token')
